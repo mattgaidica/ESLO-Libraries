@@ -18,6 +18,7 @@ SPI_Handle spiADS;
 //Helpers
 void ADS_sleepTicks(uint8_t n);
 void ADS_sendCommand(uint8_t _cmd);
+int32_t sign32(int32_t val);
 
 //System Commands
 void ADS_init(uint8_t _index, uint8_t _csPin);
