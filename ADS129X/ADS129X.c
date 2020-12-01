@@ -23,13 +23,13 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 	ADS_sdatac();
 	ADS_wreg(_ADSreg_CONFIG3, 0xCC); // enable internal buffer
 	ADS_wreg(_ADSreg_CONFIG1, 0x06); // LP mode, 250 SPS
-	ADS_wreg(_ADSreg_CONFIG2, 0x11); // generate test internally, faster mode
-	ADS_wreg(0x0D, 0x01); //use all chs for RLD, also CONFIG3
-	ADS_wreg(0x0E, 0x01); //use all chs for RLD, also CONFIG3
-	ADS_wreg(_ADSreg_CH1SET, 0x60); // test signals
+	ADS_wreg(_ADSreg_CONFIG2, 0x00); // generate test internally, faster mode
+	ADS_wreg(0x0D, 0x00); //use all chs for RLD, also CONFIG3
+	ADS_wreg(0x0E, 0x00); //use all chs for RLD, also CONFIG3
+	ADS_wreg(_ADSreg_CH1SET, 0x00); // test signals
 	ADS_wreg(_ADSreg_CH2SET, 0x00);
-	ADS_wreg(_ADSreg_CH3SET, 0x00);
-	ADS_wreg(_ADSreg_CH4SET, 0x00);
+	ADS_wreg(_ADSreg_CH3SET, 0x80);
+	ADS_wreg(_ADSreg_CH4SET, 0x80);
 	// right now START pin is high, could be left floating and use commands?
 	ADS_rdatac();
 }
