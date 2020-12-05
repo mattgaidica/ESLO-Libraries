@@ -12,7 +12,7 @@
 #include <ti/drivers/SPI.h>
 #include <ti/drivers/GPIO.h>
 
-uint_least8_t ADS_csPin;
+uint8_t ADS_csPin;
 SPI_Handle spiADS;
 
 //Helpers
