@@ -110,11 +110,6 @@ void PLATFORM_Close(void) {
 	GPIO_write(MIRROR_csPin, GPIO_CFG_OUT_HIGH); //!! REMOVE
 }
 
-void PLATFORM_Toggle(void) {
-	PLATFORM_Close();
-	PLATFORM_Open();
-}
-
 /******************************************************************************
  *                      NAND Low Level Driver Functions  
  *****************************************************************************/
@@ -127,7 +122,6 @@ void PLATFORM_Toggle(void) {
  @retval NAND_DRIVER_STATUS_INITIALIZED
  @retval DRIVER_STATUS_NOT_INITIALIZED
  */
-
 uint8_t Init_Driver(uint8_t _index, uint8_t _csPin, uint8_t _csPinMirror) {
 	/* check if the driver is previously initialized */
 	if (DRIVER_STATUS_INITIALIZED == driver_status)
@@ -145,39 +139,47 @@ uint8_t Init_Driver(uint8_t _index, uint8_t _csPin, uint8_t _csPinMirror) {
 	return driver_status;
 }
 
-void NAND_Unlock() {
-	PLATFORM_SendCmd(CMD_SET_FEATURES); // 0x1F
-	PLATFORM_SendAddr(ADDR_BLKLCK); // 0xA0
-	PLATFORM_SendData(CFG_BLK_ULCK); // 0x00
-}
+//void NAND_Unlock() {
+//	PLATFORM_Open();
+//
+//	PLATFORM_SendCmd(CMD_SET_FEATURES); // 0x1F
+//	PLATFORM_SendAddr(ADDR_BLKLCK); // 0xA0
+//	PLATFORM_SendData(CFG_BLK_ULCK); // 0x00
+//
+//	PLATFORM_Close();
+//}
 
 /**  
- The RESET command must be issued to all CE#s as the first command
+ The RESET command must be issued as the first command
  after power-on.
 
  @return Return code
  @retval NAND_TIMEOUT
  @retval NAND_SUCCESS
  */
-
 uint8_t NAND_Reset(void) {
 	uint8_t ret;
 
-	/* init board transfer */
 	PLATFORM_Open();
-
-	/* send command and/or address */
 	PLATFORM_SendCmd(CMD_RESET);
+	PLATFORM_Close();
 
 	/* wait (see datasheet for details) */
 	PLATFORM_Wait(TIME_POR);
 	ret = __wait_for_ready(STATUS_OIP);
 
-	// just unlock it here
-	PLATFORM_Toggle();
-	NAND_Unlock();
+	// unlock
+	PLATFORM_Open();
+	PLATFORM_SendCmd(CMD_SET_FEATURES); // 0x1F
+	PLATFORM_SendAddr(ADDR_BLKLCK); // 0xA0
+	PLATFORM_SendData(CFG_BLK_ULCK); // 0x00
+	PLATFORM_Close();
 
-	/* close board transfer */
+	// turn off ECC
+	PLATFORM_Open();
+	PLATFORM_SendCmd(CMD_SET_FEATURES);
+	PLATFORM_SendAddr(ADDR_CFG);
+	PLATFORM_SendData(CFG_NORM);
 	PLATFORM_Close();
 
 	return ret;
@@ -193,7 +195,6 @@ uint8_t NAND_Reset(void) {
  @return Return code
  @retval NAND_SUCCESS
  */
-
 uint8_t NAND_Read_ID(uint8_t *buffer) {
 	int i;
 
@@ -201,21 +202,11 @@ uint8_t NAND_Read_ID(uint8_t *buffer) {
 	if (DRIVER_STATUS_INITIALIZED != driver_status)
 		return DRIVER_STATUS_NOT_INITIALIZED;
 
-	/* init board transfer */
 	PLATFORM_Open();
-
-	/* send command and/or address */
 	PLATFORM_SendCmd(CMD_READID);
 	PLATFORM_SendData(DUMMY_BYTE);
-
-	/* wait (see datasheet for details) */
-	PLATFORM_Wait(TIME_RD);
-
-	/* read output */
 	for (i = 0; i < NUM_OF_READID_BYTES; i++)
 		buffer[i] = PLATFORM_ReadData();
-
-	/* close board transfer */
 	PLATFORM_Close();
 
 	return NAND_SUCCESS;
@@ -240,26 +231,22 @@ uint8_t NAND_Read_ID(uint8_t *buffer) {
 
  4. 1Fh – SET FEATURES command with a feature address of B0h and data value of 00h to exit the parameter page reading.
  */
-
 uint8_t NAND_Read_Param_Page(param_page_t *ppage) {
 	uint8_t rbuf[NUM_OF_PPAGE_BYTES];
 	uint8_t ret;
 	uint32_t i;
 
-	/* init board transfer */
 	PLATFORM_Open();
-
-	// set feature CFG
 	PLATFORM_SendCmd(CMD_SET_FEATURES); // 0x1F
 	PLATFORM_SendAddr(ADDR_CFG); // 0xB0
 	PLATFORM_SendData(CFG_OTP_AREA); // 0x40
-
-	// not explicit in data sheet
-	PLATFORM_Toggle();
+	PLATFORM_Close();
 
 	// read command
+	PLATFORM_Open();
 	PLATFORM_SendCmd(CMD_PAGE_READ); // 0x13
 	PLATFORM_SendBlockPageAddr(ADDR_PARAM_PAGE); // 0x01
+	PLATFORM_Close();
 
 	PLATFORM_Wait(TIME_RD);
 	ret = __wait_for_ready(STATUS_OIP); // 0x0F, 0xC0, (read & status)
@@ -269,21 +256,18 @@ uint8_t NAND_Read_Param_Page(param_page_t *ppage) {
 		return ret;
 
 	// read from cache @ 0x00
-	PLATFORM_Toggle();
+	PLATFORM_Open();
 	PLATFORM_SendCmd(CMD_PAGE_READ_CACHE); // 0x03
 	PLATFORM_SendColumnAddr(0x00, 0x00);
 	PLATFORM_SendData(DUMMY_BYTE);
-
-	/* read output */
 	for (i = 0; i < NUM_OF_PPAGE_BYTES; i++)
-		rbuf[i] = PLATFORM_ReadData(); // !! READ FROM CACHE?
+		rbuf[i] = PLATFORM_ReadData();
+	PLATFORM_Close();
 
-	PLATFORM_Toggle();
+	PLATFORM_Open();
 	PLATFORM_SendCmd(CMD_SET_FEATURES);
 	PLATFORM_SendAddr(ADDR_CFG);
 	PLATFORM_SendData(CFG_NORM);
-
-	/* close board transfer */
 	PLATFORM_Close();
 
 	/*
@@ -390,7 +374,6 @@ uint8_t NAND_Read_Param_Page(param_page_t *ppage) {
  @retval NAND_SUCCESS
  @retval NAND_TIMEOUT
  */
-
 uint8_t NAND_Set_Features(uint8_t feature_address, uint8_t subfeature) {
 	uint8_t ret;
 	ret = NAND_SUCCESS;
@@ -399,17 +382,10 @@ uint8_t NAND_Set_Features(uint8_t feature_address, uint8_t subfeature) {
 	if (DRIVER_STATUS_INITIALIZED != driver_status)
 		return DRIVER_STATUS_NOT_INITIALIZED;
 
-	/* init board transfer */
 	PLATFORM_Open();
-
-	/* send command and/or address */
 	PLATFORM_SendCmd(CMD_SET_FEATURES);
 	PLATFORM_SendAddr(feature_address);
-	PLATFORM_SendData(subfeature); /* p0 */
-
-	// no delay or check
-
-	/* close board transfer */
+	PLATFORM_SendData(subfeature);
 	PLATFORM_Close();
 
 	return ret;
@@ -436,17 +412,10 @@ uint8_t NAND_Get_Features(uint8_t feature_address, uint8_t *subfeature) {
 	if (DRIVER_STATUS_INITIALIZED != driver_status)
 		return DRIVER_STATUS_NOT_INITIALIZED;
 
-	/* init board transfer */
 	PLATFORM_Open();
-
-	/* send command and/or address */
 	PLATFORM_SendCmd(CMD_GET_FEATURES);
 	PLATFORM_SendAddr(feature_address);
 	*subfeature = PLATFORM_ReadData();
-
-	// no delay or check
-
-	/* close board transfer */
 	PLATFORM_Close();
 
 	return ret;
@@ -541,25 +510,20 @@ uint8_t NAND_Page_Read(uint8_t _addrLun, uint16_t _addrCol,
 	if (length > device_info.data_bytes_per_page)
 		return NAND_INVALID_LENGTH;
 
-	/* init board transfer */
 	PLATFORM_Open();
-
-	// 02h (PROGRAM LOAD command)
 	PLATFORM_SendCmd(CMD_PAGE_READ); // 0x13
 	PLATFORM_SendBlockPageAddr(_addrBlockPage);
+	PLATFORM_Close();
 
 	PLATFORM_Wait(TIME_RD);
 	ret = __wait_for_ready(STATUS_OIP);
 
-	PLATFORM_Toggle();
+	PLATFORM_Open();
 	PLATFORM_SendCmd(CMD_PAGE_READ_CACHE); // 0x03
 	PLATFORM_SendColumnAddr(_addrLun, _addrCol);
 	PLATFORM_SendData(DUMMY_BYTE);
-
-	/* get data */
 	for (i = 0; i < length; i++)
 		buffer[i] = PLATFORM_ReadData();
-
 	PLATFORM_Close();
 
 	return ret;
@@ -594,29 +558,62 @@ uint8_t NAND_Page_Program(uint8_t _addrLun, uint16_t _addrCol,
 	if (length > device_info.data_bytes_per_page)
 		return NAND_INVALID_LENGTH;
 
-	/* init board transfer */
 	PLATFORM_Open();
+	PLATFORM_SendCmd(CMD_WRITE_ENABLE); // 0x06
+	PLATFORM_Close();
 
-	// 06h (WRITE ENABLE command)
-	PLATFORM_SendCmd(CMD_WRITE_ENABLE);
-
-	// 02h (PROGRAM LOAD command)
-	PLATFORM_Toggle();
+	PLATFORM_Open();
 	PLATFORM_SendCmd(CMD_PROGRAM_LOAD); // 0x02
 	PLATFORM_SendColumnAddr(_addrLun, _addrCol);
-	/* send data */
 	for (i = 0; i < length; i++)
 		PLATFORM_SendData(buffer[i]);
+	PLATFORM_Close();
 
-	// 10h (PROGRAM EXECUTE command)
-	PLATFORM_Toggle();
+	PLATFORM_Open();
 	PLATFORM_SendCmd(CMD_PROGRAM_EXECUTE); // 0x10
 	PLATFORM_SendBlockPageAddr(_addrBlockPage);
+	PLATFORM_Close();
 
 	PLATFORM_Wait(TIME_PROG);
 	ret = __wait_for_ready(STATUS_P_FAIL);
 
+	return ret;
+}
+
+uint8_t NAND_Random_Data_Program(uint8_t _addrLun, uint16_t _addrCol,
+		uint32_t _addrBlockPage, uint8_t *buffer, uint32_t length) {
+	uint8_t ret;
+	int i;
+
+	/* verify if driver is initialized */
+	if (DRIVER_STATUS_INITIALIZED != driver_status)
+		return DRIVER_STATUS_NOT_INITIALIZED;
+
+	// check addresses?
+
+	/* x8 */
+	if (length > device_info.data_bytes_per_page)
+		return NAND_INVALID_LENGTH;
+
+	PLATFORM_Open();
+	PLATFORM_SendCmd(CMD_WRITE_ENABLE);
 	PLATFORM_Close();
+
+	PLATFORM_Open();
+	PLATFORM_SendCmd(CMD_PROGRAM_LOAD_RANDOM); // 0x02
+	PLATFORM_SendColumnAddr(_addrLun, _addrCol);
+	for (i = 0; i < length; i++)
+		PLATFORM_SendData(buffer[i]);
+	PLATFORM_Close();
+
+	// 10h (PROGRAM EXECUTE command)
+	PLATFORM_Open();
+	PLATFORM_SendCmd(CMD_PROGRAM_EXECUTE); // 0x10
+	PLATFORM_SendBlockPageAddr(_addrBlockPage);
+	PLATFORM_Close();
+
+	PLATFORM_Wait(TIME_PROG);
+	ret = __wait_for_ready(STATUS_P_FAIL);
 
 	return ret;
 }
@@ -901,15 +898,13 @@ uint8_t __wait_for_ready(uint8_t _readyBit) {
 	uint8_t ret;
 	uint32_t clock_start = Clock_getTicks();
 
-	PLATFORM_Toggle();
-
-	/* send command and/or address */
+	PLATFORM_Open();
 	PLATFORM_SendCmd(CMD_GET_FEATURES); // 0x0F
 	PLATFORM_SendAddr(ADDR_STATUS); // 0xC0
-
 	while (_readyBit & PLATFORM_ReadData()
 			&& (Clock_getTicks() < (clock_start + NUM_OF_TICKS_TO_TIMEOUT))) { /* do nothing */
 	}
+	PLATFORM_Close();
 
 	/* check exit condition */
 	if (Clock_getTicks() >= clock_start + NUM_OF_TICKS_TO_TIMEOUT)

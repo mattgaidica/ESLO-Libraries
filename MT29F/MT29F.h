@@ -4,22 +4,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#define NUM_OF_TICKS_TO_TIMEOUT 10000
+
 uint8_t NAND_csPin;
 uint8_t MIRROR_csPin;
 SPI_Handle spiNAND;
-
-// not sure where to put these
-#define DUMMY_BYTE		0x00
-#define LOT_EN 			0x00
-#define EEC_EN 			0x00
-#define NUM_OF_TICKS_TO_TIMEOUT 10000
-// ^since these are 0x00, CFG below don't need to be AND'ed
-#define CFG_NORM 		0x00
-#define CFG_OTP_AREA 	0x40
-#define CFG_OTP_LOCK	0xC0
-#define CFG_SPI_NOR		0x82
-#define CFG_BLK_LCK		0xC2
-#define CFG_BLK_ULCK	0x00
 
 /** NAND address */
 //typedef struct nand_address_t {
@@ -37,7 +26,6 @@ SPI_Handle spiNAND;
 //	uint32_t column;
 //
 //} nand_addr_t;
-
 /** Parameter Page Data Structure */
 typedef struct parameter_page_t {
 	/** Parameter page signature (ONFI) */
@@ -183,15 +171,6 @@ typedef struct parameter_page_t {
 /* 
  * Status register definition 
  */
-
-// !!RM?
-//#define	STATUS_FAIL							0x00
-//#define	STATUS_FAILC						0x01
-//#define	STATUS_ARDY							0x20
-//#define	STATUS_RDY							0x40
-//#define	STATUS_WRITE_PROTECTED				0x80
-//#define NUM_OF_ADDR_CYCLE					5
-// END !!RM
 #define	STATUS_OIP							0x00
 #define STATUS_WEL							0x01
 #define STATUS_E_FAIL						0x02
@@ -200,6 +179,18 @@ typedef struct parameter_page_t {
 #define STATUS_ECCS1						0x05
 #define STATUS_ECCS2						0x06
 #define STATUS_CRBSY						0x07
+
+// not sure where to put these
+#define DUMMY_BYTE		0x00
+#define LOT_EN 			0x00
+#define EEC_EN 			0x00
+// ^since these are 0x00, CFG below don't need to be AND'ed
+#define CFG_NORM 		0x00
+#define CFG_OTP_AREA 	0x40
+#define CFG_OTP_LOCK	0xC0
+#define CFG_SPI_NOR		0x82
+#define CFG_BLK_LCK		0xC2
+#define CFG_BLK_ULCK	0x00
 
 /* 
  * Function return constants 
@@ -248,11 +239,13 @@ uint8_t NAND_Page_Read(uint8_t _addrLun, uint16_t _addrCol,
 /* program operations */
 uint8_t NAND_Page_Program(uint8_t _addrLun, uint16_t _addrCol,
 		uint32_t _addrBlockPage, uint8_t *buffer, uint32_t length);
+uint8_t NAND_Random_Data_Program(uint8_t _addrLun, uint16_t _addrCol,
+		uint32_t _addrBlockPage, uint8_t *buffer, uint32_t length);
 //uint8_t NAND_Spare_Program(nand_addr_t addr, uint8_t *buffer, uint32_t length);
 
 /* block lock operations */
 //uint8_t NAND_Lock(void);
-void NAND_Unlock();
+//void NAND_Unlock(); // included in RESET
 //uint8_t NAND_Read_Lock_Status(nand_addr_t block_addr);
 /****************************************************************************** 
  *							List of unimplemented APIs 
@@ -280,4 +273,3 @@ uint8_t PLATFORM_ReadData(void);
 void PLATFORM_Wait(int microseconds); // !! Task_sleep(n/1000)
 
 void PLATFORM_Close(void);
-void PLATFORM_Toggle(void);
