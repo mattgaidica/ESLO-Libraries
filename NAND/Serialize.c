@@ -21,7 +21,7 @@ void NAND_Init(uint8_t _index, uint8_t _csPin, uint8_t _csPinMirror) {
 
 	FlashReset();
 	FlashUnlock(SPI_NAND_PROTECTED_ALL_UNLOCKED);
-	FlashSetFeature(SPI_NAND_OTP_REG_ADDR, 0x00);
+//	FlashSetFeature(SPI_NAND_OTP_REG_ADDR, 0x00); // turn off ECC
 }
 
 /*******************************************************************************

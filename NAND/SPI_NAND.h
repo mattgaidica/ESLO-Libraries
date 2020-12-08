@@ -81,22 +81,22 @@ typedef NMX_uint8 dataWidth; /* Flash data type */
 #endif
 
 
-#ifdef MT29FG01AAAED
-/* device details */
-typedef NMX_uint8 dataWidth; /* Flash data type */
-#define FLASH_WIDTH				8				/* Flash data width */
-#define FLASH_SIZE				0x80000000		/* Flash size in bytes */
-#define PAGE_SIZE				2112			/* Page size in bytes */
-#define PAGE_DATA_SIZE			2048			/* Page data size in bytes */
-#define PAGE_SPARE_SIZE			64				/* Page spare size in bytes*/
-#define NUM_BLOCKS				2048			/* Number of blocks*/
-#define NUM_PAGE_BLOCK			64				/* Number of pages for block*/
-
-/* utility macros */
-#define ADDRESS_2_BLOCK(Address)	((NMX_uint16) (Address >> 18))
-#define ADDRESS_2_PAGE(Address)		((NMX_uint8)  ((Address >> 12) & 0x3F))
-#define ADDRESS_2_COL(Address)		((NMX_uint16) (Address & 0x0FFF))
-#endif
+//#ifdef MT29FG01AAAED
+///* device details */
+//typedef NMX_uint8 dataWidth; /* Flash data type */
+//#define FLASH_WIDTH				8				/* Flash data width */
+//#define FLASH_SIZE				0x80000000		/* Flash size in bytes */
+//#define PAGE_SIZE				2112			/* Page size in bytes */
+//#define PAGE_DATA_SIZE			2048			/* Page data size in bytes */
+//#define PAGE_SPARE_SIZE			64				/* Page spare size in bytes*/
+//#define NUM_BLOCKS				2048			/* Number of blocks*/
+//#define NUM_PAGE_BLOCK			64				/* Number of pages for block*/
+//
+///* utility macros */
+//#define ADDRESS_2_BLOCK(Address)	((NMX_uint16) (Address >> 18))
+//#define ADDRESS_2_PAGE(Address)		((NMX_uint8)  ((Address >> 12) & 0x3F))
+//#define ADDRESS_2_COL(Address)		((NMX_uint16) (Address & 0x0FFF))
+//#endif
 
 #define SE_TIMEOUT 1 	/* timeout in seconds suggested for Sector Erase Operation */
 #define TRUE 1
