@@ -14,7 +14,7 @@ typedef enum {
 	RetSpiError, RetSpiSuccess
 } SPI_STATUS;
 
-typedef unsigned char Bool;
+//typedef unsigned char Bool;
 
 // Acceptable values for SPI master side configuration 
 typedef enum _SpiConfigOptions {
