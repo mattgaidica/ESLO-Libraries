@@ -73,13 +73,11 @@ typedef NMX_uint8 dataWidth; /* Flash data type */
 #define PAGE_SPARE_SIZE			128				/* Page spare size in bytes*/
 #define NUM_BLOCKS				2048			/* Number of blocks*/
 #define NUM_PAGE_BLOCK			64				/* Number of pages for block*/
+#define NUM_PLANE				2
 
-/* utility macros */
-#define ADDRESS_2_BLOCK(Address)	((NMX_uint16) (Address >> 18))
-#define ADDRESS_2_PAGE(Address)		((NMX_uint8)  ((Address >> 12) & 0x3F))
-#define ADDRESS_2_COL(Address)		((NMX_uint16) (Address & 0x0FFF))
+#define FlashAddressMask 0x087Ful
+#define FlashPageSize 0x0880ul
 #endif
-
 
 //#ifdef MT29FG01AAAED
 ///* device details */
@@ -92,15 +90,21 @@ typedef NMX_uint8 dataWidth; /* Flash data type */
 //#define NUM_BLOCKS				2048			/* Number of blocks*/
 //#define NUM_PAGE_BLOCK			64				/* Number of pages for block*/
 //
-///* utility macros */
-//#define ADDRESS_2_BLOCK(Address)	((NMX_uint16) (Address >> 18))
-//#define ADDRESS_2_PAGE(Address)		((NMX_uint8)  ((Address >> 12) & 0x3F))
-//#define ADDRESS_2_COL(Address)		((NMX_uint16) (Address & 0x0FFF))
+//#define FlashAddressMask 0x083Ful
+//#define FlashPageSize 0x0840ul
 //#endif
 
+///* utility macros */
+#define ADDRESS_2_BLOCK(Address)	((NMX_uint16) (Address >> 18))
+#define ADDRESS_2_PAGE(Address)		((NMX_uint8)  ((Address >> 12) & 0x3F))
+#define ADDRESS_2_COL(Address)		((NMX_uint16) (Address & 0x0FFF))
+
 #define SE_TIMEOUT 1 	/* timeout in seconds suggested for Sector Erase Operation */
+
+#ifndef TRUE
 #define TRUE 1
 #define FALSE 0
+#endif
 
 /* Functions Return Codes */
 typedef enum {
@@ -126,9 +130,6 @@ typedef enum {
 	Flash_SectorLockDownFailed,
 	Flash_WrongType
 } ReturnType;
-
-#define FlashAddressMask 0x083Ful
-#define FlashPageSize 0x0840ul
 
 /*
  * SPI NAND Command Set Definitions (see Datasheet)
@@ -270,7 +271,8 @@ ReturnType FlashWriteDisable(void);
 ReturnType FlashBlockErase(uAddrType udBlockAddr);
 ReturnType FlashPageRead(uAddrType udAddr, NMX_uint8 *pArray);
 ReturnType FlashPageReadDual(uAddrType udAddr, NMX_uint8 *pArray);
-ReturnType FlashPageReadQuad(uAddrType udAddr, NMX_uint8 *pArray, PageReadMode Mode);
+ReturnType FlashPageReadQuad(uAddrType udAddr, NMX_uint8 *pArray,
+		PageReadMode Mode);
 ReturnType FlashReadDeviceIdentification(NMX_uint16 *uwpDeviceIdentification);
 ReturnType FlashPageProgram(uAddrType udAddr, NMX_uint8 *pArray,
 		NMX_uint32 udNrOfElementsInArray);

@@ -23,13 +23,13 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 	ADS_sdatac();
 	ADS_wreg(_ADSreg_CONFIG3, 0xCC); // enable internal buffer
 	ADS_wreg(_ADSreg_CONFIG1, 0x06); // LP mode, 250 SPS
-	ADS_wreg(_ADSreg_CONFIG2, 0x00); // generate test internally, faster mode
+	ADS_wreg(_ADSreg_CONFIG2, 0x10); // generate test internally, faster mode
 	ADS_wreg(0x0D, 0x00); //use all chs for RLD, also CONFIG3
 	ADS_wreg(0x0E, 0x00); //use all chs for RLD, also CONFIG3
 	ADS_wreg(_ADSreg_CH1SET, 0x00); // test signals
 	ADS_wreg(_ADSreg_CH2SET, 0x00);
-	ADS_wreg(_ADSreg_CH3SET, 0x80);
-	ADS_wreg(_ADSreg_CH4SET, 0x80);
+	ADS_wreg(_ADSreg_CH3SET, 0x00);
+	ADS_wreg(_ADSreg_CH4SET, 0x00);
 	// right now START pin is high, could be left floating and use commands?
 	ADS_rdatac();
 }
@@ -48,20 +48,20 @@ uint8_t ADS_rreg(uint8_t _address) {
 	// 0x00 = read 1 register
 	uint8_t txBuffer[2] = { _ADS_RREG | _address, 0x00 };
 	SPI_Transaction transaction;
-	bool transferOK;
+//	bool transferOK;
 	ADS_sdatac();
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = NULL;
-	transferOK = SPI_transfer(spiADS, &transaction);
+	SPI_transfer(spiADS, &transaction);
 
 	uint8_t rxBuffer;
 	uint8_t emptyBuffer[1] = { 0x00 };
 	transaction.count = 1;
 	transaction.txBuf = (void*) emptyBuffer;
 	transaction.rxBuf = &rxBuffer;
-	transferOK = SPI_transfer(spiADS, &transaction);
+	SPI_transfer(spiADS, &transaction);
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_HIGH);
 	ADS_rdatac();
 	return rxBuffer; // 0x90 for ADS1294
@@ -71,13 +71,13 @@ void ADS_wreg(uint8_t _address, uint8_t _value) {
 	// 0x00 = write 1 register
 	uint8_t txBuffer[3] = { _ADS_WREG | _address, 0x00, _value };
 	SPI_Transaction transaction;
-	bool transferOK;
+//	bool transferOK;
 	ADS_sdatac();
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = NULL;
-	transferOK = SPI_transfer(spiADS, &transaction);
+	SPI_transfer(spiADS, &transaction);
 	ADS_rdatac();
 }
 
@@ -86,14 +86,14 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 	uint8_t txBuffer[3] = { 0x00, 0x00, 0x00 };
 	uint8_t rxBuffer[3];
 	SPI_Transaction transaction;
-	bool transferOk;
+//	bool transferOk;
 	int i;
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = (void*) rxBuffer;
 	for (i = 1; i <= 5; i++) {
-		transferOk = SPI_transfer(spiADS, &transaction);
+		SPI_transfer(spiADS, &transaction);
 		int32_t setValue = (0x00, rxBuffer[0] << 16 | rxBuffer[1] << 8
 				| rxBuffer[2]);
 		switch (i) {
@@ -162,12 +162,12 @@ int32_t sign32(int32_t val) {
 
 void ADS_sendCommand(uint8_t _cmd) {
 	SPI_Transaction transaction;
-	bool transferOK;
+//	bool transferOK;
 	transaction.count = 1;
 	transaction.txBuf = &_cmd;
 	transaction.rxBuf = NULL;
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
-	transferOK = SPI_transfer(spiADS, &transaction);
+	SPI_transfer(spiADS, &transaction);
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_HIGH);
 	// delay next command 4tclks
 	Task_sleep(2 / Clock_tickPeriod); // N*10 usec, 4tclk (tclk = 514nS)
