@@ -5,16 +5,18 @@
 #include <stdbool.h>
 
 uint8_t NAND_csPin;
-uint8_t MIRROR_csPin;
 SPI_Handle spiNAND;
 
-void NAND_Init(uint8_t _index, uint8_t _csPin, uint8_t _csPinMirror) {
+/* this must be 12MHz or else it will interfere with
+ * 250Hz EEG sampling; perhaps bypass this with sensor
+ * controller?
+ */
+void NAND_Init(uint8_t _index, uint8_t _csPin) {
 	SPI_Params spiParams;
 	NAND_csPin = _csPin;
-	MIRROR_csPin = _csPinMirror; // !!REMOVE
 	SPI_Params_init(&spiParams);
 	spiParams.frameFormat = SPI_POL0_PHA0;
-	spiParams.bitRate = 1000000;
+	spiParams.bitRate = 12000000;
 	spiParams.dataSize = 8;
 //	spiParams.transferTimeout = 10; // !!what is a good value?
 	spiNAND = SPI_open(_index, &spiParams);
@@ -42,13 +44,11 @@ void ConfigureSpi(SpiConfigOptions opt) {
 	case OpsWakeUp:
 		// check if busy?
 		GPIO_write(NAND_csPin, GPIO_CFG_OUT_LOW);
-		GPIO_write(MIRROR_csPin, GPIO_CFG_OUT_LOW); // !! REMOVE
 		break;
 	case OpsInitTransfer:
 		break;
 	case OpsEndTransfer:
 		GPIO_write(NAND_csPin, GPIO_CFG_OUT_HIGH);
-		GPIO_write(MIRROR_csPin, GPIO_CFG_OUT_HIGH); //!! REMOVE
 		break;
 	default:
 		break;

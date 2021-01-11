@@ -26,10 +26,10 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 	ADS_wreg(_ADSreg_CONFIG2, 0x10); // generate test internally, faster mode
 	ADS_wreg(0x0D, 0x00); //use all chs for RLD, also CONFIG3
 	ADS_wreg(0x0E, 0x00); //use all chs for RLD, also CONFIG3
-	ADS_wreg(_ADSreg_CH1SET, 0x00); // test signals
-	ADS_wreg(_ADSreg_CH2SET, 0x00);
-	ADS_wreg(_ADSreg_CH3SET, 0x00);
-	ADS_wreg(_ADSreg_CH4SET, 0x00);
+	ADS_wreg(_ADSreg_CH1SET, 0x60); // test signals
+	ADS_wreg(_ADSreg_CH2SET, 0x60);
+	ADS_wreg(_ADSreg_CH3SET, 0x60);
+	ADS_wreg(_ADSreg_CH4SET, 0x60);
 	// right now START pin is high, could be left floating and use commands?
 	ADS_rdatac();
 }

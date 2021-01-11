@@ -31,7 +31,7 @@ typedef struct _structCharStream {
 	uint32 length;                             // length of the stream in bytes
 } CharStream;
 
-void NAND_Init(uint8 _index, uint8 _csPin, uint8 _csPinMirror);
+void NAND_Init(uint8 _index, uint8 _csPin);
 
 SPI_STATUS Serialize_SPI(const CharStream *char_stream_send,
 		CharStream *char_stream_recv, SpiConfigOptions optBefore,
