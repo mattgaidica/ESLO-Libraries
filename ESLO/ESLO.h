@@ -4,9 +4,11 @@
 #include <unistd.h>
 #include <SPI_NAND.h>
 
-#define ESLO_VERSION 0xAA
-#define esloToNand(x,y) (memcpy(y, &x, sizeof(x)))
+#define ESLO_REVISION 0xAA // !! how to use alongside version?
+//#define esloToNand(x,y) (memcpy(y, &x, sizeof(x))) // deprecate
+#define VERSION_LENGTH 3
 
+// mode could also be rec. freq. for Axy using or-flags
 typedef enum { // 2bits, 0-3 (4 options)
 	Mode_Debug, Mode_Deployment
 } ESLO_Mode;
@@ -26,7 +28,7 @@ typedef enum { // 4bits, 0-15 (16 options)
 	Type_AxyMgy,
 	Type_AxyMgz,
 	Type_Temperature,
-	Type_Error,
+	Type_Error, // needed?
 	Type_Version
 } ESLO_Type;
 
@@ -47,5 +49,6 @@ typedef struct {
  */
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet);
 ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo);
+void ESLO_SetVersion(uint32_t *esloVersion, uint_least8_t index);
 
 #endif //end of file

@@ -1,6 +1,33 @@
 #include <ESLO.h>
 #include <SPI_NAND.h>
 #include <string.h>
+#include <ti/drivers/TRNG.h>
+#include <ti/drivers/cryptoutils/cryptokey/CryptoKeyPlaintext.h>
+
+void ESLO_SetVersion(uint32_t *esloVersion, uint_least8_t index) {
+	TRNG_Handle rndHandle;
+	int_fast16_t rndRes;
+	CryptoKey entropyKey;
+	uint8_t entropyBuffer[VERSION_LENGTH]; // 24-bits
+	TRNG_init();
+	rndHandle = TRNG_open(index, NULL);
+	if (!rndHandle) {
+		// Handle error
+		while (1)
+			;
+	}
+	CryptoKeyPlaintext_initBlankKey(&entropyKey, entropyBuffer, VERSION_LENGTH);
+	rndRes = TRNG_generateEntropy(rndHandle, &entropyKey);
+	if (rndRes != TRNG_STATUS_SUCCESS) {
+		// Handle error
+		while (1)
+			;
+	}
+	TRNG_close(rndHandle);
+
+	// set version
+	memcpy(esloVersion, entropyBuffer, sizeof(entropyBuffer));
+}
 
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet) {
 	*packet = (eslo.data & 0x00FFFFFF)
@@ -18,7 +45,6 @@ ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo) {
 	if (*esloAddr >= FLASH_SIZE)
 		ret = Flash_MemoryOverflow;
 
-	// !! if page is not updating, this line must not be working?
 	memcpy(esloBuffer + ADDRESS_2_COL(*esloAddr), &packet, 4);
 	if (ADDRESS_2_COL(*esloAddr) == PAGE_DATA_SIZE) { // end of page, write it
 		if (ADDRESS_2_PAGE(*esloAddr) == 0) { // first page in block
@@ -32,7 +58,8 @@ ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo) {
 		ret = FlashPageProgram(*esloAddr, esloBuffer, PAGE_DATA_SIZE); // write page
 		(*esloAddr) += 0x00001000; // increment page
 
-		if (ADDRESS_2_PAGE(*esloAddr) == 0) { // fresh block
+		// fresh block, still requires an intentional version write at startup
+		if (ADDRESS_2_PAGE(*esloAddr) == 0) {
 			eslo.type = Type_Version;
 			eslo.data = eslo.version;
 			ESLO_Packet(eslo, &packet);
