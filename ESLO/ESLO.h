@@ -8,6 +8,11 @@
 //#define esloToNand(x,y) (memcpy(y, &x, sizeof(x))) // deprecate
 #define VERSION_LENGTH 3
 
+typedef enum {
+	ESLO_MODULE_OFF,
+	ESLO_MODULE_ON
+} ESLO_ModuleStatus;
+
 // mode could also be rec. freq. for Axy using or-flags
 typedef enum { // 2bits, 0-3 (4 options)
 	Mode_Debug, Mode_Deployment
