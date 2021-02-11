@@ -22,6 +22,7 @@ int32_t sign32(int32_t val);
 
 //System Commands
 void ADS_init(uint8_t _index, uint8_t _csPin);
+void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4);
 void ADS_close();
 void ADS_wakeup();
 void ADS_standby();

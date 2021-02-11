@@ -18,7 +18,7 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 	spiParams.transferTimeout = 10; // !!what is a good value?
 	spiADS = SPI_open(_index, &spiParams); // CONFIG_SPI_EEG
 
-//    ADS_wakeup();
+//    ADS_wakeup(); // do we ever want to use this?
 	ADS_reset();
 	ADS_sdatac();
 	ADS_wreg(_ADSreg_CONFIG3, 0xCC); // enable internal buffer
@@ -26,11 +26,32 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 	ADS_wreg(_ADSreg_CONFIG2, 0x10); // generate test internally, faster mode
 	ADS_wreg(0x0D, 0x00); //use all chs for RLD, also CONFIG3
 	ADS_wreg(0x0E, 0x00); //use all chs for RLD, also CONFIG3
-	ADS_wreg(_ADSreg_CH1SET, 0x60); // test signals
-	ADS_wreg(_ADSreg_CH2SET, 0x60);
-	ADS_wreg(_ADSreg_CH3SET, 0x60);
-	ADS_wreg(_ADSreg_CH4SET, 0x60);
 	// right now START pin is high, could be left floating and use commands?
+	ADS_rdatac();
+}
+
+void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4) {
+	ADS_sdatac();
+	if (Ch1) {
+		ADS_wreg(_ADSreg_CH1SET, 0x60);
+	} else {
+		ADS_wreg(_ADSreg_CH1SET, 0x81); // channel power-down, MUXn[2:0]=b001
+	}
+	if (Ch2) {
+		ADS_wreg(_ADSreg_CH2SET, 0x60);
+	} else {
+		ADS_wreg(_ADSreg_CH2SET, 0x81); // channel power-down, MUXn[2:0]=b001
+	}
+	if (Ch3) {
+		ADS_wreg(_ADSreg_CH3SET, 0x60);
+	} else {
+		ADS_wreg(_ADSreg_CH3SET, 0x81); // channel power-down, MUXn[2:0]=b001
+	}
+	if (Ch4) {
+		ADS_wreg(_ADSreg_CH4SET, 0x60);
+	} else {
+		ADS_wreg(_ADSreg_CH4SET, 0x81); // channel power-down, MUXn[2:0]=b001
+	}
 	ADS_rdatac();
 }
 
@@ -94,8 +115,7 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 	transaction.rxBuf = (void*) rxBuffer;
 	for (i = 1; i <= 5; i++) {
 		SPI_transfer(spiADS, &transaction);
-		int32_t setValue = (0x00, rxBuffer[0] << 16 | rxBuffer[1] << 8
-				| rxBuffer[2]);
+		int32_t setValue = (rxBuffer[0] << 16 | rxBuffer[1] << 8 | rxBuffer[2]);
 		switch (i) {
 		case 1:
 			*status = setValue; // not sure if STATUS is needed

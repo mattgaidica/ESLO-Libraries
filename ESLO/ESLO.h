@@ -37,6 +37,22 @@ typedef enum { // 4bits, 0-15 (16 options)
 	Type_Version
 } ESLO_Type;
 
+typedef enum {
+	Set_SleepWake,
+	Set_EEGDuty,
+	Set_EEGDuration,
+	Set_EEG1,
+	Set_EEG2,
+	Set_EEG3,
+	Set_EEG4,
+	Set_AxyMode,
+	Set_TxPower,
+	Set_Time1,
+	Set_Time2,
+	Set_Time3,
+	Set_Time4
+} ESLO_Settings;
+
 typedef struct {
 	uint8_t mode;
 	uint8_t type;
