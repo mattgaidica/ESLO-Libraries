@@ -9,6 +9,11 @@
 #define VERSION_LENGTH 3
 
 typedef enum {
+	ESLO_LOW,
+	ESLO_HIGH
+} ESLO_States;
+
+typedef enum {
 	ESLO_MODULE_OFF,
 	ESLO_MODULE_ON
 } ESLO_ModuleStatus;
