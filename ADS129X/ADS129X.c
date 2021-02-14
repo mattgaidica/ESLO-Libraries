@@ -21,9 +21,10 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 //    ADS_wakeup(); // do we ever want to use this?
 	ADS_reset();
 	ADS_sdatac();
-	ADS_wreg(_ADSreg_CONFIG3, 0xCC); // enable internal buffer
+	ADS_wreg(_ADSreg_CONFIG3, 0xC0); // enable internal buffer
 	ADS_wreg(_ADSreg_CONFIG1, 0x06); // LP mode, 250 SPS
-	ADS_wreg(_ADSreg_CONFIG2, 0x10); // generate test internally, faster mode
+//	ADS_wreg(_ADSreg_CONFIG2, 0x10); // generate test internally, faster mode
+	ADS_wreg(_ADSreg_CONFIG2, 0x00); // default values
 	ADS_wreg(0x0D, 0x00); //use all chs for RLD, also CONFIG3
 	ADS_wreg(0x0E, 0x00); //use all chs for RLD, also CONFIG3
 	// right now START pin is high, could be left floating and use commands?
@@ -31,26 +32,28 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 }
 
 void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4) {
+	uint8_t chOn = 0x60; // 0x60 = 12x max gain
+	uint8_t chOff = 0x81;
 	ADS_sdatac();
 	if (Ch1) {
-		ADS_wreg(_ADSreg_CH1SET, 0x60);
+		ADS_wreg(_ADSreg_CH1SET, chOn);
 	} else {
-		ADS_wreg(_ADSreg_CH1SET, 0x81); // channel power-down, MUXn[2:0]=b001
+		ADS_wreg(_ADSreg_CH1SET, chOff); // channel power-down, MUXn[2:0]=b001
 	}
 	if (Ch2) {
-		ADS_wreg(_ADSreg_CH2SET, 0x60);
+		ADS_wreg(_ADSreg_CH2SET, chOn);
 	} else {
-		ADS_wreg(_ADSreg_CH2SET, 0x81); // channel power-down, MUXn[2:0]=b001
+		ADS_wreg(_ADSreg_CH2SET, chOff); // channel power-down, MUXn[2:0]=b001
 	}
 	if (Ch3) {
-		ADS_wreg(_ADSreg_CH3SET, 0x60);
+		ADS_wreg(_ADSreg_CH3SET, chOn);
 	} else {
-		ADS_wreg(_ADSreg_CH3SET, 0x81); // channel power-down, MUXn[2:0]=b001
+		ADS_wreg(_ADSreg_CH3SET, chOff); // channel power-down, MUXn[2:0]=b001
 	}
 	if (Ch4) {
-		ADS_wreg(_ADSreg_CH4SET, 0x60);
+		ADS_wreg(_ADSreg_CH4SET, chOn);
 	} else {
-		ADS_wreg(_ADSreg_CH4SET, 0x81); // channel power-down, MUXn[2:0]=b001
+		ADS_wreg(_ADSreg_CH4SET, chOff); // channel power-down, MUXn[2:0]=b001
 	}
 	ADS_rdatac();
 }
@@ -61,8 +64,13 @@ void ADS_close() {
 	// make CS input, remove pull-up from DRDY?
 }
 
+// !! consider just using a pointer as the input
 uint8_t ADS_getDeviceID() {
-	return ADS_rreg(_ADSreg_ID);
+	uint8_t devId;
+	ADS_sdatac();
+	devId = ADS_rreg(_ADSreg_ID);
+	ADS_rdatac();
+	return devId;
 }
 
 uint8_t ADS_rreg(uint8_t _address) {
@@ -70,7 +78,6 @@ uint8_t ADS_rreg(uint8_t _address) {
 	uint8_t txBuffer[2] = { _ADS_RREG | _address, 0x00 };
 	SPI_Transaction transaction;
 //	bool transferOK;
-	ADS_sdatac();
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
@@ -84,22 +91,20 @@ uint8_t ADS_rreg(uint8_t _address) {
 	transaction.rxBuf = &rxBuffer;
 	SPI_transfer(spiADS, &transaction);
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_HIGH);
-	ADS_rdatac();
 	return rxBuffer; // 0x90 for ADS1294
 }
 
+// remember to encapsulate commands in ADS_sdatac and ADS_rdatac
 void ADS_wreg(uint8_t _address, uint8_t _value) {
 	// 0x00 = write 1 register
 	uint8_t txBuffer[3] = { _ADS_WREG | _address, 0x00, _value };
 	SPI_Transaction transaction;
 //	bool transferOK;
-	ADS_sdatac();
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = NULL;
 	SPI_transfer(spiADS, &transaction);
-	ADS_rdatac();
 }
 
 void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
@@ -134,7 +139,6 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 			break;
 		}
 	}
-
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_HIGH);
 }
 

@@ -23,6 +23,9 @@ typedef enum { // 2bits, 0-3 (4 options)
 	Mode_Debug, Mode_Deployment
 } ESLO_Mode;
 
+// could always use a type like "EEG" as a type and then just
+// extract the next n packets on the other side if I need more
+// types... or hijack mode or checksum bits
 typedef enum { // 4bits, 0-15 (16 options)
 	Type_AbsoluteTime,
 	Type_RelativeTime,
