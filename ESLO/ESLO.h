@@ -7,6 +7,7 @@
 #define ESLO_REVISION 0xAA // !! how to use alongside version?
 //#define esloToNand(x,y) (memcpy(y, &x, sizeof(x))) // deprecate
 #define VERSION_LENGTH 3
+#define V_DROPOUT 2400000 // 1.8V reg goes down to 2.2V
 
 typedef enum {
 	ESLO_LOW,
