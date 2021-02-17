@@ -10,13 +10,11 @@
 #define V_DROPOUT 2400000 // 1.8V reg goes down to 2.2V
 
 typedef enum {
-	ESLO_LOW,
-	ESLO_HIGH
+	ESLO_LOW, ESLO_HIGH
 } ESLO_States;
 
 typedef enum {
-	ESLO_MODULE_OFF,
-	ESLO_MODULE_ON
+	ESLO_MODULE_OFF, ESLO_MODULE_ON
 } ESLO_ModuleStatus;
 
 // mode could also be rec. freq. for Axy using or-flags

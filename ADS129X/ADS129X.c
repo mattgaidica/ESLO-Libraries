@@ -23,8 +23,8 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 	ADS_sdatac();
 	ADS_wreg(_ADSreg_CONFIG3, 0xC0); // enable internal buffer
 	ADS_wreg(_ADSreg_CONFIG1, 0x06); // LP mode, 250 SPS
-//	ADS_wreg(_ADSreg_CONFIG2, 0x10); // generate test internally, faster mode
-	ADS_wreg(_ADSreg_CONFIG2, 0x00); // default values
+	ADS_wreg(_ADSreg_CONFIG2, 0x10); // generate test internally, faster mode
+//	ADS_wreg(_ADSreg_CONFIG2, 0x00); // default values
 	ADS_wreg(0x0D, 0x00); //use all chs for RLD, also CONFIG3
 	ADS_wreg(0x0E, 0x00); //use all chs for RLD, also CONFIG3
 	// right now START pin is high, could be left floating and use commands?
@@ -32,7 +32,9 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 }
 
 void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4) {
-	uint8_t chOn = 0x60; // 0x60 = 12x max gain
+//	uint8_t chOn = 0x60; // 0x60 = 12x max gain
+//	uint8_t chOn = 0x61; // input shorted
+	uint8_t chOn = 0x05; // square
 	uint8_t chOff = 0x81;
 	ADS_sdatac();
 	if (Ch1) {
@@ -109,8 +111,10 @@ void ADS_wreg(uint8_t _address, uint8_t _value) {
 
 void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 		int32_t *ch4) {
-	uint8_t txBuffer[3] = { 0x00, 0x00, 0x00 };
+	uint8_t txBuffer[3] = { 0 };
 	uint8_t rxBuffer[3];
+	uint8_t fillme[15];
+
 	SPI_Transaction transaction;
 //	bool transferOk;
 	int i;
@@ -118,8 +122,11 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = (void*) rxBuffer;
+	;
+
 	for (i = 1; i <= 5; i++) {
 		SPI_transfer(spiADS, &transaction);
+		memcpy(fillme + (3*(i-1)), rxBuffer, sizeof(rxBuffer));
 		int32_t setValue = (rxBuffer[0] << 16 | rxBuffer[1] << 8 | rxBuffer[2]);
 		switch (i) {
 		case 1:

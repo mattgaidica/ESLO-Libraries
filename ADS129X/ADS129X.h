@@ -1,8 +1,5 @@
 //
 //  ADS1299.h
-//  
-//  Created by Conor Russomanno on 6/17/13.
-//
 
 #ifndef ____ADS129X__
 #define ____ADS129X__
