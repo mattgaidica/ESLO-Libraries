@@ -58,7 +58,7 @@ ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo) {
 		ret = FlashPageProgram(*esloAddr, esloBuffer, PAGE_DATA_SIZE); // write page
 		(*esloAddr) += 0x00001000; // increment page
 
-		// fresh block, still requires an intentional version write at startup
+		// fresh block, note: requires an intentional version write at startup
 		if (ADDRESS_2_PAGE(*esloAddr) == 0) {
 			eslo.type = Type_Version;
 			eslo.data = eslo.version;

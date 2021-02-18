@@ -15,10 +15,7 @@ void NAND_Init(uint8_t _index, uint8_t _csPin) {
 	SPI_Params spiParams;
 	NAND_csPin = _csPin;
 	SPI_Params_init(&spiParams);
-	spiParams.frameFormat = SPI_POL0_PHA0;
 	spiParams.bitRate = 12000000;
-	spiParams.dataSize = 8;
-//	spiParams.transferTimeout = 10; // !!what is a good value?
 	spiNAND = SPI_open(_index, &spiParams);
 
 	FlashReset();

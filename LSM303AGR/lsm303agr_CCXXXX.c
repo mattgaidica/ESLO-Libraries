@@ -6,7 +6,7 @@
 void AXY_Init(uint_least8_t _index) {
 	I2C_Params i2cParams;
 	I2C_Params_init(&i2cParams);
-	i2cParams.bitRate = I2C_1000kHz; // !!try I2C_3400kHz
+	i2cParams.bitRate = I2C_3400kHz; // !!try I2C_3400kHz
 	axy_i2c = I2C_open(_index, &i2cParams);
 }
 

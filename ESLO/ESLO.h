@@ -57,7 +57,8 @@ typedef enum {
 	Set_Time1,
 	Set_Time2,
 	Set_Time3,
-	Set_Time4
+	Set_Time4,
+	Set_ExportData,
 } ESLO_Settings;
 
 typedef struct {
