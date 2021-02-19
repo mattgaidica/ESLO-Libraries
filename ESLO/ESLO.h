@@ -4,8 +4,6 @@
 #include <unistd.h>
 #include <SPI_NAND.h>
 
-#define ESLO_REVISION 0xAA // !! how to use alongside version?
-//#define esloToNand(x,y) (memcpy(y, &x, sizeof(x))) // deprecate
 #define VERSION_LENGTH 3
 #define V_DROPOUT 2400000 // 1.8V reg goes down to 2.2V
 
@@ -59,6 +57,7 @@ typedef enum {
 	Set_Time3,
 	Set_Time4,
 	Set_ExportData,
+	Set_ResetVersion
 } ESLO_Settings;
 
 typedef struct {
@@ -78,6 +77,7 @@ typedef struct {
  */
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet);
 ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo);
-void ESLO_SetVersion(uint32_t *esloVersion, uint_least8_t index);
-
+void ESLO_GenerateVersion(uint32_t *esloVersion, uint_least8_t index);
+void ESLO_decodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver, uint32_t *addr);
+void ESLO_encodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver, uint32_t *addr);
 #endif //end of file

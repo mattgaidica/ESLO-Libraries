@@ -4,7 +4,20 @@
 #include <ti/drivers/TRNG.h>
 #include <ti/drivers/cryptoutils/cryptokey/CryptoKeyPlaintext.h>
 
-void ESLO_SetVersion(uint32_t *esloVersion, uint_least8_t index) {
+void ESLO_decodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver,
+		uint32_t *addr) {
+	memcpy(sig, buffer, sizeof(uint32_t));
+	memcpy(ver, buffer + 1, sizeof(uint32_t));
+	memcpy(addr, buffer + 2, sizeof(uint32_t));
+}
+void ESLO_encodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver,
+		uint32_t *addr) {
+	memcpy(buffer, sig, sizeof(uint32_t));
+	memcpy(buffer + 1, ver, sizeof(uint32_t));
+	memcpy(buffer + 2, addr, sizeof(uint32_t));
+}
+
+void ESLO_GenerateVersion(uint32_t *esloVersion, uint_least8_t index) {
 	TRNG_Handle rndHandle;
 	int_fast16_t rndRes;
 	CryptoKey entropyKey;
