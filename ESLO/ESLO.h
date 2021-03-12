@@ -23,7 +23,7 @@ typedef enum { // 2bits, 0-3 (4 options)
 // could always use a type like "EEG" as a type and then just
 // extract the next n packets on the other side if I need more
 // types... or hijack mode or checksum bits
-typedef enum { // 4bits, 0-15 (16 options)
+typedef enum { // 8bits, 0-255 (256 options)
 	Type_AbsoluteTime,
 	Type_RelativeTime,
 	Type_EEG1,
@@ -37,7 +37,7 @@ typedef enum { // 4bits, 0-15 (16 options)
 	Type_AxyMgx,
 	Type_AxyMgy,
 	Type_AxyMgz,
-	Type_Temperature,
+	Type_Therm,
 	Type_Error, // needed?
 	Type_Version
 } ESLO_Type;
@@ -61,10 +61,8 @@ typedef enum {
 } ESLO_Settings;
 
 typedef struct {
-	uint8_t mode;
 	uint8_t type;
 	uint32_t data;
-	uint32_t version;
 } eslo_dt;
 
 /*
@@ -75,9 +73,14 @@ typedef struct {
  * eslo.type = Type_Temperature;
  * ESLO_Packet(eslo, &packet);
  */
+int32_t ESLO_convertTherm(uint32_t Vo);
+uint32_t ESLO_convertBatt(uint32_t Vo);
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet);
-ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo);
+ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer,
+		uint32_t esloVersion, eslo_dt eslo);
 void ESLO_GenerateVersion(uint32_t *esloVersion, uint_least8_t index);
-void ESLO_decodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver, uint32_t *addr);
-void ESLO_encodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver, uint32_t *addr);
+void ESLO_decodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver,
+		uint32_t *addr);
+void ESLO_encodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver,
+		uint32_t *addr);
 #endif //end of file

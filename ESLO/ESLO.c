@@ -4,6 +4,19 @@
 #include <ti/drivers/TRNG.h>
 #include <ti/drivers/cryptoutils/cryptokey/CryptoKeyPlaintext.h>
 
+int32_t ESLO_convertTherm(uint32_t Vo) {
+	// lots of tricks to make these units work with integers
+	uint32_t Rf = 100000; // ohms
+	uint32_t Vi = 1800000; // uV
+	int32_t Rt = (((Vo / 1000) * (Rf / 1000)) / ((Vi - Vo) / 1000)) * 1000;
+	int32_t temp_uC = -196 * Rt + 45177309;
+	return temp_uC;
+}
+
+uint32_t ESLO_convertBatt(uint32_t Vo) {
+	return Vo * 2;
+}
+
 void ESLO_decodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver,
 		uint32_t *addr) {
 	memcpy(sig, buffer, sizeof(uint32_t));
@@ -43,14 +56,13 @@ void ESLO_GenerateVersion(uint32_t *esloVersion, uint_least8_t index) {
 }
 
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet) {
-	*packet = (eslo.data & 0x00FFFFFF)
-			| // make data 24-bits
-			((uint32_t) (eslo.type << 24) & 0x0F000000)
-			| ((uint32_t) (eslo.mode << 28) & 0xF0000000);
+	*packet = (eslo.data & 0x00FFFFFF) | // make data 24-bits
+			((uint32_t) (eslo.type << 24) & 0xFF000000);
 }
 
-ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo) {
-	ReturnType ret;
+ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer,
+		uint32_t esloVersion, eslo_dt eslo) {
+	ReturnType ret = Flash_Success;
 	uint32_t packet;
 
 	ESLO_Packet(eslo, &packet);
@@ -59,6 +71,8 @@ ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo) {
 		ret = Flash_MemoryOverflow;
 
 	memcpy(esloBuffer + ADDRESS_2_COL(*esloAddr), &packet, 4);
+	*esloAddr += 4;
+
 	if (ADDRESS_2_COL(*esloAddr) == PAGE_DATA_SIZE) { // end of page, write it
 		if (ADDRESS_2_PAGE(*esloAddr) == 0) { // first page in block
 			ret = FlashBlockErase(*esloAddr); // wipe 64 pages
@@ -74,15 +88,16 @@ ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer, eslo_dt eslo) {
 		// fresh block, note: requires an intentional version write at startup
 		if (ADDRESS_2_PAGE(*esloAddr) == 0) {
 			eslo.type = Type_Version;
-			eslo.data = eslo.version;
+			eslo.data = esloVersion;
 			ESLO_Packet(eslo, &packet);
 			memcpy(esloBuffer + ADDRESS_2_COL(*esloAddr), &packet, 4);
 			*esloAddr += 4;
 		}
-	} else {
-		*esloAddr += 4; // next mem location, add sizeof(packet)
-		ret = Flash_Success;
 	}
+//	else {
+//		*esloAddr += 4; // next mem location, add sizeof(packet)
+//		ret = Flash_Success;
+//	}
 
 	return ret;
 }
