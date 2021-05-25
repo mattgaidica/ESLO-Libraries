@@ -573,6 +573,7 @@ int32_t lsm6dsox_xl_data_rate_get(stmdev_ctx_t *ctx,
   return ret;
 }
 
+
 /**
   * @brief  Gyroscope UI chain full-scale selection.[set]
   *

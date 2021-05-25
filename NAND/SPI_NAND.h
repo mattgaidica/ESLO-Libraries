@@ -67,7 +67,7 @@ typedef NMX_uint32 uAddrType;
 /* device details */
 typedef NMX_uint8 dataWidth; /* Flash data type */
 #define FLASH_WIDTH				8				/* Flash data width */
-#define FLASH_SIZE				0x80000000		/* Flash size in bytes */
+#define FLASH_SIZE				0x10000000		/* Flash size in bytes */
 #define PAGE_SIZE				2176			/* Page size in bytes */
 #define PAGE_DATA_SIZE			2048			/* Page data size in bytes */
 #define PAGE_SPARE_SIZE			128				/* Page spare size in bytes*/

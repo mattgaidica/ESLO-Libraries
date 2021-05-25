@@ -4,6 +4,15 @@
 #include <ti/drivers/TRNG.h>
 #include <ti/drivers/cryptoutils/cryptokey/CryptoKeyPlaintext.h>
 
+// !!add vital positions to ESLO.h as #define
+void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm, uint32_t *esloAddr,
+		uint8_t *value) {
+	memcpy(value, vbatt, sizeof(uint32_t));
+	memcpy(value + 4, lowVolt, sizeof(uint32_t));
+	memcpy(value + 8, therm, sizeof(uint32_t));
+	memcpy(value + 12, esloAddr, sizeof(uint32_t));
+}
+
 int32_t ESLO_convertTherm(uint32_t Vo) {
 	// lots of tricks to make these units work with integers
 	uint32_t Rf = 100000; // ohms

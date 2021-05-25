@@ -74,6 +74,8 @@ typedef struct {
  * eslo.type = Type_Temperature;
  * ESLO_Packet(eslo, &packet);
  */
+void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm, uint32_t *esloAddr,
+		uint8_t *value);
 int32_t ESLO_convertTherm(uint32_t Vo);
 uint32_t ESLO_convertBatt(uint32_t Vo);
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet);
