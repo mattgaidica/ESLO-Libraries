@@ -8,7 +8,7 @@
 
 #define VERSION_LENGTH 3
 #define V_DROPOUT 2400000 // 1.8V reg goes down to 2.2V
-#define EEG_SAMPLING_DIV 5 // effective Fs = (250 / this number)
+#define EEG_SAMPLING_DIV 2 // effective Fs = (250 / this number)
 static uint8_t iEEGDiv = 0;
 
 NVS_Handle nvsHandle;
