@@ -4,10 +4,12 @@
 #include <ti/drivers/GPIO.h>
 
 void AXY_Init(uint_least8_t _index) {
+	uint32_t setTimeout = 100;
 	I2C_Params i2cParams;
 	I2C_Params_init(&i2cParams);
 	i2cParams.bitRate = I2C_3400kHz;
 	axy_i2c = I2C_open(_index, &i2cParams);
+	I2C_setClockTimeout(axy_i2c, setTimeout);
 }
 
 void AXY_Close(void) {
