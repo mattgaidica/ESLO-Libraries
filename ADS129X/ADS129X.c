@@ -64,7 +64,6 @@ void ADS_close() {
 	// make CS input, remove pull-up from DRDY?
 }
 
-// !! consider just using a pointer as the input
 uint8_t ADS_getDeviceID() {
 	uint8_t devId;
 	ADS_sdatac();

@@ -5,7 +5,6 @@
 #include <ti/drivers/GPIO.h>
 
 uint8_t AXY_csPin;
-uint8_t AXY_csPin2;
 SPI_Handle spiAXY;
 
 //typedef union {
@@ -23,7 +22,7 @@ SPI_Handle spiAXY;
 //	uint8_t u8bit[12];
 //} axis3bit32_t;
 
-void AXY_Init(uint_least8_t _index, uint8_t _csPin, uint8_t _csPin2);
+void AXY_Init(uint_least8_t _index, uint8_t _csPin);
 
 void AXY_Close(void);
 
