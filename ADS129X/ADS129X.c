@@ -56,6 +56,7 @@ void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4) {
 		ADS_wreg(_ADSreg_CH4SET, chOff); // channel power-down, MUXn[2:0]=b001
 	}
 	ADS_rdatac();
+	ADS_start();
 }
 
 void ADS_close() {
@@ -113,6 +114,7 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 
 	SPI_Transaction transaction;
 //	bool transferOk;
+	ADS_start();
 	int i;
 	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
