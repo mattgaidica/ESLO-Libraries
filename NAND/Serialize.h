@@ -1,7 +1,7 @@
 #ifndef _SERIALIZE_H_ 
 #define _SERIALIZE_H_ 
 
-#include <stdint.h>
+#include <ESLO.h>
 
 #define NULL_PTR 0x0   // a null pointer
 
@@ -34,7 +34,7 @@ typedef struct _structCharStream {
 	uint32_t length;                             // length of the stream in bytes
 } CharStream;
 
-void NAND_Init(uint8_t _index, uint8_t _csPin);
+uint8_t NAND_Init();
 
 SPI_STATUS Serialize_SPI(const CharStream *char_stream_send,
 		CharStream *char_stream_recv, SpiConfigOptions optBefore,

@@ -1,11 +1,9 @@
 #ifndef LSM6DSOX_CCXXXX_H
 #define LSM6DSOX_CCXXXX_H
 
-#include <ti/drivers/SPI.h>
-#include <ti/drivers/GPIO.h>
-
-uint8_t AXY_csPin;
-SPI_Handle spiAXY;
+#include <ESLO.h>
+#include <lsm6dsox_CCXXXX.h>
+#include <lsm6dsox_reg.h>
 
 //typedef union {
 //	int16_t i16bit[3];
@@ -22,9 +20,7 @@ SPI_Handle spiAXY;
 //	uint8_t u8bit[12];
 //} axis3bit32_t;
 
-void AXY_Init(uint_least8_t _index, uint8_t _csPin);
-
-void AXY_Close(void);
+uint8_t AXY_Init(stmdev_ctx_t dev_ctx_xl);
 
 int32_t write_reg(void *handle, uint8_t Reg, uint8_t *Bufp,
 		uint16_t len);

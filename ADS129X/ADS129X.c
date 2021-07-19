@@ -1,20 +1,12 @@
-// https://github.com/grafexum/ADS1115/blob/master/ads1115.h
-// https://github.com/jcu-eresearch/c-hdc1080/blob/master/hdc1080.h
-// !! handle transferOk?
-
+#include <ESLO.h>
 #include <ADS129X.h>
-#include <ti/sysbios/knl/Task.h>
-#include <ti/sysbios/knl/Clock.h>
-#include <math.h>
-#include <unistd.h>
 
-void ADS_init(uint8_t _index, uint8_t _csPin) {
-	SPI_Params spiParams;
-	ADS_csPin = _csPin;
-	SPI_Params_init(&spiParams);
-	spiParams.frameFormat = SPI_POL0_PHA1;
-	spiParams.bitRate = 1000000;
-	spiADS = SPI_open(_index, &spiParams); // CONFIG_SPI_EEG
+uint8_t ADS_init() {
+	uint8_t whoami;
+	whoami = ADS_getDeviceID();
+	if (whoami != _ADS_WHOAMI) {
+		return ESLO_FAIL;
+	}
 
 //    ADS_wakeup(); // do we ever want to use this?
 	ADS_reset();
@@ -27,6 +19,7 @@ void ADS_init(uint8_t _index, uint8_t _csPin) {
 	ADS_wreg(0x0E, 0x00); //use all chs for RLD, also CONFIG3
 	// right now START pin is high, could be left floating and use commands?
 	ADS_rdatac();
+	return ESLO_PASS;
 }
 
 void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4) {
@@ -59,9 +52,10 @@ void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4) {
 	ADS_start();
 }
 
+// !!inoperable right now, needs to work with shared SPI
 void ADS_close() {
 	ADS_standby();
-	SPI_close(spiADS);
+//	SPI_close(ESLO_SPI_EEG);
 	// make CS input, remove pull-up from DRDY?
 }
 
@@ -78,19 +72,19 @@ uint8_t ADS_rreg(uint8_t _address) {
 	uint8_t txBuffer[2] = { _ADS_RREG | _address, 0x00 };
 	SPI_Transaction transaction;
 //	bool transferOK;
-	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
+	GPIO_write(_EEG_CS, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = NULL;
-	SPI_transfer(spiADS, &transaction);
+	SPI_transfer(ESLO_SPI_EEG, &transaction);
 
 	uint8_t rxBuffer;
 	uint8_t emptyBuffer[1] = { 0x00 };
 	transaction.count = 1;
 	transaction.txBuf = (void*) emptyBuffer;
 	transaction.rxBuf = &rxBuffer;
-	SPI_transfer(spiADS, &transaction);
-	GPIO_write(ADS_csPin, GPIO_CFG_OUT_HIGH);
+	SPI_transfer(ESLO_SPI_EEG, &transaction);
+	GPIO_write(_EEG_CS, GPIO_CFG_OUT_HIGH);
 	return rxBuffer; // 0x90 for ADS1294
 }
 
@@ -100,11 +94,11 @@ void ADS_wreg(uint8_t _address, uint8_t _value) {
 	uint8_t txBuffer[3] = { _ADS_WREG | _address, 0x00, _value };
 	SPI_Transaction transaction;
 //	bool transferOK;
-	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
+	GPIO_write(_EEG_CS, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = NULL;
-	SPI_transfer(spiADS, &transaction);
+	SPI_transfer(ESLO_SPI_EEG, &transaction);
 }
 
 void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
@@ -116,13 +110,13 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 //	bool transferOk;
 	ADS_start();
 	int i;
-	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
+	GPIO_write(_EEG_CS, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
 	transaction.txBuf = (void*) txBuffer;
 	transaction.rxBuf = (void*) rxBuffer;
 
 	for (i = 1; i <= 5; i++) {
-		SPI_transfer(spiADS, &transaction);
+		SPI_transfer(ESLO_SPI_EEG, &transaction);
 		int32_t setValue = (rxBuffer[0] << 16 | rxBuffer[1] << 8 | rxBuffer[2]);
 		switch (i) {
 		case 1:
@@ -142,7 +136,7 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 			break;
 		}
 	}
-	GPIO_write(ADS_csPin, GPIO_CFG_OUT_HIGH);
+	GPIO_write(_EEG_CS, GPIO_CFG_OUT_HIGH);
 }
 
 //SYSTEM COMMANDS
@@ -193,9 +187,9 @@ void ADS_sendCommand(uint8_t _cmd) {
 	transaction.count = 1;
 	transaction.txBuf = &_cmd;
 	transaction.rxBuf = NULL;
-	GPIO_write(ADS_csPin, GPIO_CFG_OUT_LOW);
-	SPI_transfer(spiADS, &transaction);
-	GPIO_write(ADS_csPin, GPIO_CFG_OUT_HIGH);
+	GPIO_write(_EEG_CS, GPIO_CFG_OUT_LOW);
+	SPI_transfer(ESLO_SPI_EEG, &transaction);
+	GPIO_write(_EEG_CS, GPIO_CFG_OUT_HIGH);
 	// delay next command 4tclks
 	Task_sleep(2 / Clock_tickPeriod); // N*10 usec, 4tclk (tclk = 514nS)
 	if (_cmd == _ADS_RESET) {

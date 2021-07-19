@@ -1,16 +1,8 @@
-//
-//  ADS1299.h
-
 #ifndef ____ADS129X__
 #define ____ADS129X__
 
+#include <ESLO.h>
 #include "Definitions.h"
-#include "ti_drivers_config.h"
-#include <ti/drivers/SPI.h>
-#include <ti/drivers/GPIO.h>
-
-uint8_t ADS_csPin;
-SPI_Handle spiADS;
 
 //Helpers
 void ADS_sleepTicks(uint8_t n);
@@ -18,7 +10,7 @@ void ADS_sendCommand(uint8_t _cmd);
 int32_t sign32(int32_t val);
 
 //System Commands
-void ADS_init(uint8_t _index, uint8_t _csPin);
+uint8_t ADS_init();
 void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4);
 void ADS_close();
 void ADS_wakeup();

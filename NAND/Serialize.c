@@ -1,26 +1,23 @@
+#include <ESLO.h>
 #include <Serialize.h>
-#include <ti/drivers/GPIO.h>
-#include <ti/drivers/SPI.h>
-#include <SPI_NAND.h>
 #include <stdbool.h>
-
-uint8_t NAND_csPin;
-SPI_Handle spiNAND;
 
 /* this must be 12MHz or else it will interfere with
  * 250Hz EEG sampling; perhaps bypass this with sensor
  * controller?
  */
-void NAND_Init(uint8_t _index, uint8_t _csPin) {
-	SPI_Params spiParams;
-	NAND_csPin = _csPin;
-	SPI_Params_init(&spiParams);
-	spiParams.bitRate = 10000000; // up to 10000000
-	spiNAND = SPI_open(_index, &spiParams);
+uint8_t NAND_Init() {
+	NMX_uint16 whoami;
 
 	FlashReset();
 	FlashUnlock(SPI_NAND_PROTECTED_ALL_UNLOCKED);
 //	FlashSetFeature(SPI_NAND_OTP_REG_ADDR, 0x00); // turn off ECC
+
+	FlashReadDeviceIdentification(&whoami);
+	if (whoami != _NAND_ID) {
+		return ESLO_FAIL;
+	}
+	return ESLO_PASS;
 }
 
 /*******************************************************************************
@@ -40,12 +37,12 @@ void ConfigureSpi(SpiConfigOptions opt) {
 	switch (opt) {
 	case OpsWakeUp:
 		// check if busy?
-		GPIO_write(NAND_csPin, GPIO_CFG_OUT_LOW);
+		GPIO_write(_NAND_CS, GPIO_CFG_OUT_LOW);
 		break;
 	case OpsInitTransfer:
 		break;
 	case OpsEndTransfer:
-		GPIO_write(NAND_csPin, GPIO_CFG_OUT_HIGH);
+		GPIO_write(_NAND_CS, GPIO_CFG_OUT_HIGH);
 		break;
 	default:
 		break;
@@ -91,13 +88,13 @@ SPI_STATUS Serialize_SPI(const CharStream *char_stream_send,
 	transaction.count = char_stream_send->length;
 	transaction.txBuf = char_stream_send->pChar;
 	transaction.rxBuf = NULL;
-	transferOK = SPI_transfer(spiNAND, &transaction);
+	transferOK = SPI_transfer(ESLO_SPI, &transaction);
 
 	if (NULL_PTR != char_stream_recv) {
 		transaction.count = char_stream_recv->length;
 		transaction.txBuf = NULL;
 		transaction.rxBuf = char_stream_recv->pChar;
-		transferOK = SPI_transfer(spiNAND, &transaction);
+		transferOK = SPI_transfer(ESLO_SPI, &transaction);
 	}
 
 	ConfigureSpi(optAfter);

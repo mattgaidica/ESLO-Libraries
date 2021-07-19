@@ -2,20 +2,41 @@
 #define _ESLO_H_
 
 #include <unistd.h>
+#include <math.h>
 #include <SPI_NAND.h>
 
+#include <ti/drivers/SPI.h>
+#include <ti/drivers/GPIO.h>
 #include <ti/drivers/NVS.h>
+#include <ti_drivers_config.h>
+
+#include <ti/sysbios/knl/Task.h>
+#include <ti/sysbios/knl/Clock.h>
+
+/* AXY */
+#include <lsm6dsox_CCXXXX.h>
+#include <lsm6dsox_reg.h>
+/* NAND */
+#include <SPI_NAND.h>
+#include <ESLO.h>
+#include <Serialize.h>
+/* ADS129X */
+#include <ADS129X.h>
+#include <Definitions.h>
+
 
 #define VERSION_LENGTH 3
 #define V_DROPOUT 2400000 // 1.8V reg goes down to 2.2V
 #define EEG_SAMPLING_DIV 2 // effective Fs = (250 / this number)
-static uint8_t iEEGDiv = 0;
+#define PACKET_SZ_EEG SIMPLEPROFILE_CHAR4_LEN / 4
+#define PACKET_SZ_XL SIMPLEPROFILE_CHAR5_LEN / 4
 
-NVS_Handle nvsHandle;
-NVS_Attrs regionAttrs;
-NVS_Params nvsParams;
-static uint32_t nvsBuffer[3]; // esloSignature, esloVersion, esloAddr
-static uint32_t ESLOSignature = 0xE123E123; // something unique
+#define ESLO_FAIL 0x00
+#define ESLO_PASS 0x01
+
+// these are used in other libraries
+SPI_Handle ESLO_SPI, ESLO_SPI_EEG;
+static uint32_t ESLOSignature  = 0xE123E123; // something unique
 
 typedef enum {
 	ESLO_LOW, ESLO_HIGH
@@ -84,6 +105,8 @@ typedef struct {
  * eslo.type = Type_Temperature;
  * ESLO_Packet(eslo, &packet);
  */
+SPI_Handle ESLO_SPI_init(uint8_t _index);
+SPI_Handle ESLO_SPI_EEG_init(uint8_t _index);
 void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm, uint32_t *esloAddr,
 		uint8_t *value);
 int32_t ESLO_convertTherm(uint32_t Vo);

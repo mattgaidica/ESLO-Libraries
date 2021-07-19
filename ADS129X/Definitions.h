@@ -4,6 +4,8 @@
 #ifndef _Definitions_h
 #define _Definitions_h
 
+#define _ADS_WHOAMI 0x90
+
 #define _ADS_WAKEUP 0x02 // Wake-up from standby mode
 #define _ADS_STANDBY 0x04 // Enter Standby mode
 #define _ADS_RESET 0x06 // Reset the device

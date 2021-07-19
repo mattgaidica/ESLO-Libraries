@@ -4,9 +4,29 @@
 #include <ti/drivers/TRNG.h>
 #include <ti/drivers/cryptoutils/cryptokey/CryptoKeyPlaintext.h>
 
+SPI_Handle ESLO_SPI_init(uint8_t _index) {
+	SPI_Handle SPI_handle;
+	SPI_Params spiParams;
+	SPI_Params_init(&spiParams);
+	spiParams.bitRate = 1000000; // up to 10,000,000
+	spiParams.frameFormat = SPI_POL1_PHA1; // mode 3
+	SPI_handle = SPI_open(_index, &spiParams);
+	return SPI_handle;
+}
+
+SPI_Handle ESLO_SPI_EEG_init(uint8_t _index) {
+	SPI_Handle SPI_handle;
+	SPI_Params spiParams;
+	SPI_Params_init(&spiParams);
+	spiParams.frameFormat = SPI_POL0_PHA1;
+	spiParams.bitRate = 1000000; // possible max of ~15,000,000
+	SPI_handle = SPI_open(_index, &spiParams); // CONFIG_SPI_EEG
+	return SPI_handle;
+}
+
 // !!add vital positions to ESLO.h as #define
-void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm, uint32_t *esloAddr,
-		uint8_t *value) {
+void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm,
+		uint32_t *esloAddr, uint8_t *value) {
 	memcpy(value, vbatt, sizeof(uint32_t));
 	memcpy(value + 4, lowVolt, sizeof(uint32_t));
 	memcpy(value + 8, therm, sizeof(uint32_t));

@@ -66,6 +66,7 @@ typedef NMX_uint32 uAddrType;
 #ifdef MT29F2G01ABBGD
 /* device details */
 typedef NMX_uint8 dataWidth; /* Flash data type */
+#define _NAND_ID				0x2C25
 #define FLASH_WIDTH				8				/* Flash data width */
 #define FLASH_SIZE				0x10000000		/* Flash size in bytes */
 #define PAGE_SIZE				2176			/* Page size in bytes */
