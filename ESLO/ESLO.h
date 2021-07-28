@@ -82,7 +82,7 @@ typedef enum {
 	Set_EEG3,
 	Set_EEG4,
 	Set_AxyMode,
-	Set_TxPower,
+	Set_UNUSED,
 	Set_Time1,
 	Set_Time2,
 	Set_Time3,

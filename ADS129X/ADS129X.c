@@ -54,7 +54,8 @@ void ADS_enableChannels(bool Ch1, bool Ch2, bool Ch3, bool Ch4) {
 
 // !!inoperable right now, needs to work with shared SPI
 void ADS_close() {
-	ADS_standby();
+	ADS_stop();
+//	ADS_standby(); // probably not applicable since I use PWDN pin
 //	SPI_close(ESLO_SPI_EEG);
 	// make CS input, remove pull-up from DRDY?
 }
@@ -108,7 +109,7 @@ void ADS_updateData(int32_t *status, int32_t *ch1, int32_t *ch2, int32_t *ch3,
 
 	SPI_Transaction transaction;
 //	bool transferOk;
-	ADS_start();
+//	ADS_start();
 	int i;
 	GPIO_write(_EEG_CS, GPIO_CFG_OUT_LOW);
 	transaction.count = sizeof(txBuffer);
