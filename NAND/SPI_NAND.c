@@ -1118,7 +1118,6 @@ ReturnType FlashReadOTPStatus(NMX_uint8 *otp_reg_value) {
  * operations.
  *
  *
- * System software should initially check the first spare area location for non-FFh data on
  * the first page of each block prior to performing any program or erase operations on the
  * NAND Flash device. Black blocks are marked with 0x00.
  *

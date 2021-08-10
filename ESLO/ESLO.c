@@ -123,10 +123,6 @@ ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer,
 			*esloAddr += 4;
 		}
 	}
-//	else {
-//		*esloAddr += 4; // next mem location, add sizeof(packet)
-//		ret = Flash_Success;
-//	}
 
 	return ret;
 }

@@ -68,7 +68,7 @@ typedef NMX_uint32 uAddrType;
 typedef NMX_uint8 dataWidth; /* Flash data type */
 #define _NAND_ID				0x2C25
 #define FLASH_WIDTH				8				/* Flash data width */
-#define FLASH_SIZE				0x20000000		/* Flash size in bytes, !!is this correct? */
+#define FLASH_SIZE				0x7FFFFFF		/* 29 bits total / 8 */
 #define PAGE_SIZE				2176			/* Page size in bytes */
 #define PAGE_DATA_SIZE			2048			/* Page data size in bytes */
 #define PAGE_SPARE_SIZE			128				/* Page spare size in bytes*/
