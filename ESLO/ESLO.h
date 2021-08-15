@@ -26,7 +26,7 @@
 
 
 #define VERSION_LENGTH 3
-#define V_DROPOUT 2400000 // 1.8V reg goes down to 2.2V
+#define V_DROPOUT 2550000 // 1.8V reg goes down to 2.2V
 #define EEG_SAMPLING_DIV 5 // effective Fs = (250 / this number)
 #define PACKET_SZ_EEG SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL SIMPLEPROFILE_CHAR5_LEN / 4
