@@ -27,7 +27,7 @@
 
 #define VERSION_LENGTH 3
 #define V_DROPOUT 2550000 // 1.8V reg goes down to 2.2V
-#define EEG_SAMPLING_DIV 25 // effective Fs = (250 / this number)
+#define EEG_SAMPLING_DIV 2 // effective Fs = (250 / this number)
 #define PACKET_SZ_EEG SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL SIMPLEPROFILE_CHAR5_LEN / 4
 
@@ -37,7 +37,7 @@
 // these are used in other libraries
 SPI_Handle ESLO_SPI, ESLO_SPI_EEG;
 static uint32_t ESLOSignature  = 0xE123E123; // something unique
-static uint32_t GitCommit = 0x008FCA4;
+//static uint32_t GitCommit = 0x84B383;
 
 typedef enum {
 	ESLO_LOW, ESLO_HIGH
@@ -76,8 +76,8 @@ typedef enum { // 8bits, 0-255 (256 options)
 
 typedef enum {
 	Set_Record,
-	Set_EEGDuty,
-	Set_EEGDuration,
+	Set_RecPeriod,
+	Set_RecDuration,
 	Set_EEG1,
 	Set_EEG2,
 	Set_EEG3,
