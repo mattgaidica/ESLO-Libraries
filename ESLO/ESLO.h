@@ -26,7 +26,7 @@
 
 
 #define VERSION_LENGTH 3
-#define V_DROPOUT 2550000 // 1.8V reg goes down to 2.2V
+#define V_DROPOUT 2200000 // 1.8V reg goes down to 2.2V, empirically tested
 #define EEG_SAMPLING_DIV 2 // effective Fs = (250 / this number)
 #define PACKET_SZ_EEG SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL SIMPLEPROFILE_CHAR5_LEN / 4
@@ -66,9 +66,9 @@ typedef enum { // 8bits, 0-255 (256 options)
 	Type_AxyXlx,
 	Type_AxyXly,
 	Type_AxyXlz,
-	Type_AxyMgx,
-	Type_AxyMgy,
-	Type_AxyMgz,
+	Type_EEG_State,
+	Type_NotUsed1,
+	Type_NotUsed2,
 	Type_Therm,
 	Type_Error, // needed?
 	Type_Version
