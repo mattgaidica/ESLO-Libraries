@@ -66,7 +66,7 @@ typedef enum { // 8bits, 0-255 (256 options)
 	Type_AxyXlx,
 	Type_AxyXly,
 	Type_AxyXlz,
-	Type_EEG_State,
+	Type_EEGState,
 	Type_NotUsed1,
 	Type_NotUsed2,
 	Type_Therm,
