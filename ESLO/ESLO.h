@@ -24,10 +24,10 @@
 #include <ADS129X.h>
 #include <Definitions.h>
 
-
 #define VERSION_LENGTH 3
 #define V_DROPOUT 2200000 // 1.8V reg goes down to 2.2V, empirically tested
 #define EEG_SAMPLING_DIV 2 // effective Fs = (250 / this number)
+#define SWA_BUF_LEN 2 * (250 / EEG_SAMPLING_DIV)
 #define PACKET_SZ_EEG SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL SIMPLEPROFILE_CHAR5_LEN / 4
 
@@ -36,7 +36,7 @@
 
 // these are used in other libraries
 SPI_Handle ESLO_SPI, ESLO_SPI_EEG;
-static uint32_t ESLOSignature  = 0xE123E123; // something unique
+static uint32_t ESLOSignature = 0xE123E123; // something unique
 //static uint32_t GitCommit = 0x84B383;
 
 typedef enum {
@@ -70,7 +70,7 @@ typedef enum { // 8bits, 0-255 (256 options)
 	Type_NotUsed1,
 	Type_NotUsed2,
 	Type_Therm,
-	Type_Error, // needed?
+	Type_Error,
 	Type_Version
 } ESLO_Type;
 
@@ -83,12 +83,12 @@ typedef enum {
 	Set_EEG3,
 	Set_EEG4,
 	Set_AxyMode,
-	Set_UNUSED, // was DataExport
+	Set_SWA,
 	Set_Time1,
 	Set_Time2,
 	Set_Time3,
 	Set_Time4,
-	Set_ExportData,
+	Set_NotUsed1,
 	Set_ResetVersion,
 	Set_AdvLong
 } ESLO_Settings;
@@ -108,8 +108,8 @@ typedef struct {
  */
 SPI_Handle ESLO_SPI_init(uint8_t _index);
 SPI_Handle ESLO_SPI_EEG_init(uint8_t _index);
-void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm, uint32_t *esloAddr,
-		uint8_t *value);
+void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm,
+		uint32_t *esloAddr, uint8_t *value);
 int32_t ESLO_convertTherm(uint32_t Vo);
 uint32_t ESLO_convertBatt(uint32_t Vo);
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet);
