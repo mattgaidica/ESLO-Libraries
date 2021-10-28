@@ -27,7 +27,7 @@
 #define VERSION_LENGTH 		3
 #define V_DROPOUT 			2200000 // 1.8V reg goes down to 2.2V, empirically tested
 #define EEG_SAMPLING_DIV 	2 // effective Fs = (250 / this number)
-#define SWA_BUF_HALF_LEN 	64 //250 / EEG_SAMPLING_DIV
+#define SWA_BUF_HALF_LEN 	128 //250 / EEG_SAMPLING_DIV
 #define SWA_BUF_LEN 		2 * SWA_BUF_HALF_LEN
 #define PACKET_SZ_EEG 		SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL 		SIMPLEPROFILE_CHAR5_LEN / 4
