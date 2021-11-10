@@ -26,11 +26,12 @@ SPI_Handle ESLO_SPI_EEG_init(uint8_t _index) {
 
 // !!add vital positions to ESLO.h as #define
 void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm,
-		uint32_t *esloAddr, uint8_t *value) {
+		uint32_t *esloAddr, uint8_t *axyLog, uint8_t *value) {
 	memcpy(value, vbatt, sizeof(uint32_t));
 	memcpy(value + 4, lowVolt, sizeof(uint32_t));
 	memcpy(value + 8, therm, sizeof(uint32_t));
 	memcpy(value + 12, esloAddr, sizeof(uint32_t));
+	memcpy(value + 16, axyLog, sizeof(uint8_t));
 }
 
 int32_t ESLO_convertTherm(uint32_t Vo) {

@@ -27,10 +27,19 @@
 #define VERSION_LENGTH 		3
 #define V_DROPOUT 			2200000 // 1.8V reg goes down to 2.2V, empirically tested
 #define EEG_SAMPLING_DIV 	2 // effective Fs = (250 / this number)
-#define SWA_BUF_HALF_LEN 	128 //250 / EEG_SAMPLING_DIV
-#define SWA_BUF_LEN 		2 * SWA_BUF_HALF_LEN
+#define FFT_HALF_LEN 		1024
+#define FFT_LEN 			2 * FFT_HALF_LEN
+#define FFT_SWA_DIV			2
+#define SWA_LEN				256
+#define	SWA_F_MIN			0.5
+#define SWA_F_MAX			4
+#define SWA_RATIO			4 // over other bands
 #define PACKET_SZ_EEG 		SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL 		SIMPLEPROFILE_CHAR5_LEN / 4
+#define SWA_KEY				0xFF00FF00
+#define DATA_TIMEOUT_PERIOD	15000 // ms, time of recording + data transfer
+#define AXY_MOVE_THRESH		800 // based on axy sensitivity
+#define AXY_MOVE_MASK		0x1F // 0001 1111 (5 minutes)
 
 #define ESLO_FAIL 0x00
 #define ESLO_PASS 0x01
@@ -110,7 +119,7 @@ typedef struct {
 SPI_Handle ESLO_SPI_init(uint8_t _index);
 SPI_Handle ESLO_SPI_EEG_init(uint8_t _index);
 void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm,
-		uint32_t *esloAddr, uint8_t *value);
+		uint32_t *esloAddr, uint8_t *axyLog, uint8_t *value);
 int32_t ESLO_convertTherm(uint32_t Vo);
 uint32_t ESLO_convertBatt(uint32_t Vo);
 void ESLO_Packet(eslo_dt eslo, uint32_t *packet);

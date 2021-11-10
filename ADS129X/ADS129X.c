@@ -192,8 +192,8 @@ void ADS_sendCommand(uint8_t _cmd) {
 	SPI_transfer(ESLO_SPI_EEG, &transaction);
 	GPIO_write(_EEG_CS, GPIO_CFG_OUT_HIGH);
 	// delay next command 4tclks
-	Task_sleep(2 / Clock_tickPeriod); // N*10 usec, 4tclk (tclk = 514nS)
+	Task_sleep(1); // 4tclk (tclk = 514nS)
 	if (_cmd == _ADS_RESET) {
-		Task_sleep(10 / Clock_tickPeriod); // N*10 usec, 18tclk (9.2uS)
+		Task_sleep(2); // 18tclk (9.2uS)
 	}
 }
