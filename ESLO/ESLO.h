@@ -34,11 +34,12 @@
 #define	SWA_F_MIN			0.5
 #define SWA_F_MAX			4
 #define SWA_RATIO			4 // over other bands
+#define SWA_KEY				0xF0F0F0F0
 #define PACKET_SZ_EEG 		SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL 		SIMPLEPROFILE_CHAR5_LEN / 4
-#define SWA_KEY				0xFF00FF00
 #define DATA_TIMEOUT_PERIOD	15000 // ms, time of recording + data transfer
-#define AXY_MOVE_THRESH		800 // based on axy sensitivity
+#define AXY_MOVE_THRESH		1000 // based on axy sensitivity
+#define AXY_HAS_MOVED_EEG	0x03 // last two minutes
 #define AXY_MOVE_MASK		0x1F // 0001 1111 (5 minutes)
 
 #define ESLO_FAIL 0x00
@@ -77,7 +78,7 @@ typedef enum { // 8bits, 0-255 (256 options)
 	Type_AxyXly,
 	Type_AxyXlz,
 	Type_EEGState,
-	Type_NotUsed1,
+	Type_SWATrial,
 	Type_NotUsed2,
 	Type_Therm,
 	Type_Error,
