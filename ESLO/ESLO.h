@@ -34,7 +34,6 @@
 #define	SWA_F_MIN			0.5
 #define SWA_F_MAX			4
 #define SWA_RATIO			4 // over other bands
-#define SWA_KEY				0xF0F0F0F0
 #define PACKET_SZ_EEG 		SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL 		SIMPLEPROFILE_CHAR5_LEN / 4
 #define DATA_TIMEOUT_PERIOD	15000 // ms, time of recording + data transfer
