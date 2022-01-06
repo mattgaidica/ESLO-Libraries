@@ -100,6 +100,7 @@ typedef enum {
 	Set_Time3,
 	Set_Time4,
 	Set_SWAThresh,
+	Set_SWABypass,
 	Set_ResetVersion,
 	Set_AdvLong
 } ESLO_Settings;
