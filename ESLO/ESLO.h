@@ -37,10 +37,11 @@
 #define BLE_LATENCY			10 // ms
 #define PACKET_SZ_EEG 		SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL 		SIMPLEPROFILE_CHAR5_LEN / 4
-#define DATA_TIMEOUT_PERIOD	15000 // ms, time of recording + data transfer
+#define DATA_TIMEOUT_PERIOD	30000 // ms, time of recording + data transfer
 #define AXY_MOVE_THRESH		1000 // based on axy sensitivity
 #define AXY_HAS_MOVED_EEG	0x03 // last two minutes
 #define AXY_MOVE_MASK		0x1F // 0001 1111 (5 minutes)
+#define SWA_THRESH_INC		1e9f
 
 #define ESLO_FAIL 0x00
 #define ESLO_PASS 0x01
