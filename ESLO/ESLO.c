@@ -24,6 +24,19 @@ SPI_Handle ESLO_SPI_EEG_init(uint8_t _index) {
 	return SPI_handle;
 }
 
+float_t ESLO_calculateSD(float_t data[]) {
+	float_t sum = 0.0, mean, SD = 0.0;
+	int i;
+	for (i = 0; i < 10; ++i) {
+		sum += data[i];
+	}
+	mean = sum / 10;
+	for (i = 0; i < 10; ++i) {
+		SD += pow(data[i] - mean, 2);
+	}
+	return sqrt(SD / 10);
+}
+
 // !!add vital positions to ESLO.h as #define
 void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm,
 		uint32_t *esloAddr, uint8_t *axyLog, uint8_t *value) {
@@ -35,7 +48,7 @@ void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm,
 }
 
 int32_t ESLO_convertTherm(uint32_t Vo) {
-	// lots of tricks to make these units work with integers
+// lots of tricks to make these units work with integers
 	uint32_t Rf = 100000; // ohms
 	uint32_t Vi = 1800000; // uV
 	int32_t Rt = (((Vo / 1000) * (Rf / 1000)) / ((Vi - Vo) / 1000)) * 1000;
@@ -81,7 +94,7 @@ void ESLO_GenerateVersion(uint32_t *esloVersion, uint_least8_t index) {
 	}
 	TRNG_close(rndHandle);
 
-	// set version
+// set version
 	memcpy(esloVersion, entropyBuffer, sizeof(entropyBuffer));
 }
 

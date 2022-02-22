@@ -30,19 +30,24 @@
 #define EEG_FS				250
 #define FFT_HALF_LEN 		1024
 #define FFT_LEN 			2 * FFT_HALF_LEN
-//#define FFT_SWA_DIV			2
+#define FFT_SWA_DIV			2 // !! REMOVE TO FFT UPGRADE
 #define SWA_LEN				256
+
 #define	SWA_F_MIN			0.5
 #define SWA_F_MAX			4
-#define SWA_RATIO			4 // over other bands
-#define BLE_LATENCY			10 // ms
+#define	THETA_F_MIN			4
+#define THETA_F_MAX			12
+
+#define BLE_LATENCY			7.5 // ms, for base
 #define PACKET_SZ_EEG 		SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL 		SIMPLEPROFILE_CHAR5_LEN / 4
 #define DATA_TIMEOUT_PERIOD	30000 // ms, time of recording + data transfer
-#define AXY_MOVE_THRESH		1000 // based on axy sensitivity
-#define AXY_HAS_MOVED_EEG	0x03 // last two minutes
+#define AXY_HAS_MOVED_EEG	0x01 // isMoving bits to test
 #define AXY_MOVE_MASK		0x1F // 0001 1111 (5 minutes)
-#define SWA_THRESH_INC		1e9f
+#define AXY_MOVE_THRESH		100 // based on std()
+
+#define ADS_GAIN 			12 // not used in init yet (hardcoded)
+#define VREF				1.5
 
 #define ESLO_FAIL 0x00
 #define ESLO_PASS 0x01
@@ -102,7 +107,7 @@ typedef enum {
 	Set_Time3,
 	Set_Time4,
 	Set_SWAThresh,
-	Set_SWABypass,
+	Set_SWARatio,
 	Set_ResetVersion,
 	Set_AdvLong
 } ESLO_Settings;
@@ -122,6 +127,7 @@ typedef struct {
  */
 SPI_Handle ESLO_SPI_init(uint8_t _index);
 SPI_Handle ESLO_SPI_EEG_init(uint8_t _index);
+float_t ESLO_calculateSD(float_t data[]);
 void ESLO_compileVitals(uint32_t *vbatt, uint32_t *lowVolt, int32_t *therm,
 		uint32_t *esloAddr, uint8_t *axyLog, uint8_t *value);
 int32_t ESLO_convertTherm(uint32_t Vo);
