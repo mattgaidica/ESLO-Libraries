@@ -27,7 +27,8 @@
 #define VERSION_LENGTH 		3
 #define V_DROPOUT 			2200000 // 1.8V reg goes down to 2.2V, empirically tested
 #define EEG_SAMPLING_DIV 	2 // effective Fs = (250 / this number)
-#define EEG_FS				250
+#define EEG_FS				250 // Hz (ideal)
+#define EEG_STARTUP_DELAY	500 // ms
 #define FFT_HALF_LEN 		1024
 #define FFT_LEN 			2 * FFT_HALF_LEN
 #define FFT_SWA_DIV			2 // !! REMOVE TO FFT UPGRADE
