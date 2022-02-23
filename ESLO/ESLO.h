@@ -37,7 +37,7 @@
 
 #define	SWA_F_MIN			0.5
 #define SWA_F_MAX			4
-#define	THETA_F_MIN			4
+#define	THETA_F_MIN			6
 #define THETA_F_MAX			12
 
 #define BLE_LATENCY			7.5 // ms, for base
