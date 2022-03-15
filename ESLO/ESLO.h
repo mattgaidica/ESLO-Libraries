@@ -25,7 +25,7 @@
 #include <Definitions.h>
 
 #define VERSION_LENGTH 		3
-#define V_DROPOUT 			2200000 // 1.8V reg goes down to 2.2V, empirically tested
+#define V_DROPOUT 			2400000 // 1.8V reg goes down to 2.2V, empirically tested
 #define EEG_SAMPLING_DIV 	2 // effective Fs = (250 / this number)
 #define EEG_FS				250 // Hz (ideal)
 #define EEG_STARTUP_SAMPLES	(EEG_FS / EEG_SAMPLING_DIV) * 0.5 // seconds
@@ -40,7 +40,6 @@
 #define	THETA_F_MIN			6
 #define THETA_F_MAX			12
 
-#define BLE_LATENCY			7.5 // ms, for base
 #define PACKET_SZ_EEG 		SIMPLEPROFILE_CHAR4_LEN / 4
 #define PACKET_SZ_XL 		SIMPLEPROFILE_CHAR5_LEN / 4
 #define DATA_TIMEOUT_PERIOD	30000 // ms, time of recording + data transfer
