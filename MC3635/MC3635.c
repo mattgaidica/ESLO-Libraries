@@ -10,6 +10,23 @@ uint8_t CfgRange, CfgResolution, CfgFifo, CfgINT;
 
 // https://github.com/mcubemems/mCube_mc36xx_arduino_driver/blob/master/MC36XX.cpp
 
+// **** Helpers ****
+void MC3635_sensorSniff(SPI_Handle spiHandle)
+{
+    MC3635_stop(spiHandle);
+    MC3635_SetSniffThreshold(spiHandle, MC36XX_AXIS_X, 2);
+    MC3635_SetSniffThreshold(spiHandle, MC36XX_AXIS_Y, 2);
+    MC3635_SetSniffThreshold(spiHandle, MC36XX_AXIS_Z, 2);
+    MC3635_SetSniffDetectCount(spiHandle, MC36XX_AXIS_X, 3);
+    MC3635_SetSniffDetectCount(spiHandle, MC36XX_AXIS_Y, 3);
+    MC3635_SetSniffDetectCount(spiHandle, MC36XX_AXIS_Z, 3);
+    MC3635_SetSniffAndOrN(spiHandle, MC36XX_ANDORN_OR);
+    MC3635_SetSniffDeltaMode(spiHandle, MC36XX_DELTA_MODE_C2P);
+    MC3635_SetINTCtrl(spiHandle, 0, 0, 0, 0, 1); //Enable wake-up INT
+    MC3635_sniff(spiHandle);
+}
+
+// **** Core Functions ****
 SPI_Handle MC3635_init(uint_least8_t CONFIG_SPI)
 {
     SPI_Handle spiHandle;
@@ -166,27 +183,6 @@ void MC3635_SetMode(SPI_Handle spiHandle, MC36XX_mode_t mode)
 void MC3635_sniff(SPI_Handle spiHandle)
 {
     MC3635_SetMode(spiHandle, MC36XX_MODE_SNIFF);
-
-    // DIY from docs?
-//    MC3635_writeReg(spiHandle, MC36XX_REG_MODE_C, 0x01);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_RANGE_C, 0x04);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_FIFO_C, 0x41); // def: 0x5D
-//    MC3635_writeReg(spiHandle, MC36XX_REG_PMCR, 0x30);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_WAKE_C, 0x10);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_TRIGC, 0x30);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_WAKE_C, 0x30);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_TRIGC, 0x01);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_WAKE_C, 0x60);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_TRIGC, 0x52);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_WAKE_C, 0x70);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_TRIGC, 0x01);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_WAKE_C, 0x0F);
-//    MC3635_writeReg(spiHandle, MC36XX_REG_MODE_C, 0x02);
-//
-//    MC3635_writeReg(spiHandle, MC36XX_REG_SNIFFTH_C, 0x0A); // reg 0x13, X-axis, thresh=0x0A
-//    MC3635_writeReg(spiHandle, MC36XX_REG_SNIFF_CONF_C, 0x01); // reg 0x14, X-axis
-//    // turn on interrupt for SNIFF mode
-//    MC3635_writeReg(spiHandle, MC36XX_REG_INTR_C, 0x06); // 0x06 = open drain, active LOW; pull-up on GPIO
 }
 void MC3635_sniffReset(SPI_Handle spiHandle)
 {

@@ -223,18 +223,20 @@ typedef struct
     unsigned char baPadding[2];
 } MC36XX_InterruptEvent;
 
+// **** Helpers ****
+void MC3635_sensorSniff(SPI_Handle spiHandle);
+
+// **** Core Functions ****
 SPI_Handle MC3635_init(uint_least8_t CONFIG_SPI);
 bool MC3635_start(SPI_Handle spiHandle);
-
-// void MC3635_wake(void);
 void MC3635_stop(SPI_Handle spiHandle);
 void MC3635_reset(SPI_Handle spiHandle);
 void MC3635_sniff(SPI_Handle spiHandle);
 void MC3635_sniffReset(SPI_Handle spiHandle);
-
 bool MC3635_readRegBit(SPI_Handle spiHandle, uint8_t reg, uint8_t pos);
 uint8_t MC3635_readReg(SPI_Handle spiHandle, uint8_t reg);
-void MC3635_readRegs(SPI_Handle spiHandle, uint8_t reg, uint8_t *buffer, uint8_t len);
+void MC3635_readRegs(SPI_Handle spiHandle, uint8_t reg, uint8_t *buffer,
+                     uint8_t len);
 
 void MC3635_writeRegBit(SPI_Handle spiHandle, uint8_t reg, uint8_t pos,
                         bool state);
@@ -245,12 +247,13 @@ void MC3635_SetSniffThreshold(SPI_Handle spiHandle, MC36XX_axis_t axis_cfg,
 void MC3635_SetSniffDetectCount(SPI_Handle spiHandle, MC36XX_axis_t axis_cfg,
                                 uint8_t sniff_cnt);
 void MC3635_SetSniffDeltaMode(SPI_Handle spiHandle,
-                             MC36XX_delta_mode_t deltamode);
+                              MC36XX_delta_mode_t deltamode);
 void MC3635_SetINTCtrl(SPI_Handle spiHandle, uint8_t fifo_thr_int_ctl,
                        uint8_t fifo_full_int_ctl, uint8_t fifo_empty_int_ctl,
                        uint8_t acq_int_ctl, uint8_t wake_int_ctl);
 void MC3635_SetSniffAndOrN(SPI_Handle spiHandle, MC36XX_andorn_t logicandor);
-void MC3635_INTHandler(SPI_Handle spiHandle, MC36XX_interrupt_event_t *ptINT_Event);
+void MC3635_INTHandler(SPI_Handle spiHandle,
+                       MC36XX_interrupt_event_t *ptINT_Event);
 MC36XX_acc_t MC3635_readRawAccel(SPI_Handle spiHandle);
 
 short x, y, z;
