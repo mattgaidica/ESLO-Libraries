@@ -34,7 +34,7 @@ SPI_Handle MC3635_init(uint_least8_t CONFIG_SPI)
 
     SPI_Params_init(&spiParams);
     spiParams.frameFormat = SPI_POL1_PHA1;
-    spiParams.bitRate = 100000;
+    spiParams.bitRate = 500000; // Juxta << 1MHz
     spiHandle = SPI_open(CONFIG_SPI, &spiParams);
     return spiHandle;
 }
