@@ -9,6 +9,7 @@
 #define MC3635_READ_CMD        0x80
 #define MC3635_ADDR_BIT        0x40
 #define MC3635_MAX_TRY         1000
+#define TEST_SCRATCH           0xA2
 
 /******************************************************************************
  *** CONSTANT / DEFINE

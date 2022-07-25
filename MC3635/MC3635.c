@@ -34,15 +34,22 @@ SPI_Handle MC3635_init(uint_least8_t CONFIG_SPI)
 
     SPI_Params_init(&spiParams);
     spiParams.frameFormat = SPI_POL1_PHA1;
-    spiParams.bitRate = 500000; // Juxta << 1MHz
+    spiParams.bitRate = 100000; // Juxta << 1MHz
     spiHandle = SPI_open(CONFIG_SPI, &spiParams);
     return spiHandle;
 }
 
 bool MC3635_start(SPI_Handle spiHandle)
 {
+    uint8_t value;
     MC3635_reset(spiHandle);
-    return true;
+    MC3635_writeReg(spiHandle, MC36XX_REG_SCRATCH, TEST_SCRATCH);
+    value = MC3635_readReg(spiHandle, MC36XX_REG_SCRATCH);
+    if (value == TEST_SCRATCH)
+    {
+        return true;
+    }
+    return false;
 }
 
 // Table 11. Recommended Initialization Sequence for SPI Interface
@@ -53,7 +60,7 @@ void MC3635_reset(SPI_Handle spiHandle)
 
     MC3635_writeReg(spiHandle, MC36XX_REG_MODE_C, 0x01);
     MC3635_writeReg(spiHandle, MC36XX_REG_RESET, 0x40);
-    usleep(1000); // 1ms
+    usleep(10000); // >1ms
     while (value == 0)
     { // look for non-zero
         value = MC3635_readReg(spiHandle, MC36XX_REG_PROD);
@@ -76,7 +83,7 @@ void MC3635_reset(SPI_Handle spiHandle)
     }
     MC3635_writeReg(spiHandle, MC36XX_REG_PWR_CONTROL, 0x42);
     MC3635_writeReg(spiHandle, MC36XX_REG_MODE_C, 0x01);
-    usleep(10000); // 10ms
+    usleep(50000); // >10ms
     MC3635_writeReg(spiHandle, MC36XX_REG_DMX, 0x01);
     MC3635_writeReg(spiHandle, MC36XX_REG_DMY, 0x80);
     MC3635_writeReg(spiHandle, MC36XX_REG_INIT_2, 0x00);
@@ -316,7 +323,7 @@ void MC3635_SetINTCtrl(SPI_Handle spiHandle, uint8_t fifo_thr_int_ctl,
             | ((fifo_full_int_ctl & 0x01) << 5)
             | ((fifo_empty_int_ctl & 0x01) << 4) | ((acq_int_ctl & 0x01) << 3)
             | ((wake_int_ctl & 0x01) << 2) | MC36XX_INTR_C_IAH_ACTIVE_LOW //MC36XX_INTR_C_IAH_ACTIVE_HIGH//
-            | MC36XX_INTR_C_IPP_MODE_OPEN_DRAIN); // MC36XX_INTR_C_IPP_MODE_PUSH_PULL
+            | MC36XX_INTR_C_IPP_MODE_PUSH_PULL); //  MC36XX_INTR_C_IPP_MODE_OPEN_DRAIN
     MC3635_writeReg(spiHandle, MC36XX_REG_INTR_C, CfgINT);
 }
 
