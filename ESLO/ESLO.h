@@ -93,6 +93,7 @@ typedef enum { // 8bits, 0-255 (256 options)
 	Type_Version
 } ESLO_Type;
 
+// update SIMPLEPROFILE_CHAR3_LEN in simple_gatt_profile.h
 typedef enum {
 	Set_Record,
 	Set_RecPeriod,
@@ -110,7 +111,8 @@ typedef enum {
 	Set_SWAThresh,
 	Set_SWARatio,
 	Set_ResetVersion,
-	Set_AdvLong
+	Set_AdvLong,
+	Set_WritePage
 } ESLO_Settings;
 
 typedef struct {

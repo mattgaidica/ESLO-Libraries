@@ -105,7 +105,7 @@ void ESLO_Packet(eslo_dt eslo, uint32_t *packet) {
 
 ReturnType ESLO_Write(uAddrType *esloAddr, uint8_t *esloBuffer,
 		uint32_t esloVersion, eslo_dt eslo) {
-	ReturnType ret = Flash_Success;
+	ReturnType ret = Flash_ProgramFailed;
 	uint32_t packet;
 
 	ESLO_Packet(eslo, &packet);
