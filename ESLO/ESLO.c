@@ -57,7 +57,7 @@ int32_t ESLO_convertTherm(uint32_t Vo) {
 }
 
 uint32_t ESLO_convertBatt(uint32_t Vo) {
-	return Vo * 2;
+	return Vo * 2; // because of resistor divider
 }
 
 void ESLO_decodeNVS(uint32_t *buffer, uint32_t *sig, uint32_t *ver,
