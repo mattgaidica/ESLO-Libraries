@@ -19,8 +19,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef LSM303AGR_REGS_H
-#define LSM303AGR_REGS_H
+#ifndef LSM303AGR_REG_H
+#define LSM303AGR_REG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -1358,6 +1358,6 @@ int32_t lsm303agr_mag_i2c_interface_get(stmdev_ctx_t *ctx,
 }
 #endif
 
-#endif /* LSM303AGR_REGS_H */
+#endif /* LSM303AGR_REG_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
