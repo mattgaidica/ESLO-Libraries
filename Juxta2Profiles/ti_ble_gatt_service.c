@@ -106,28 +106,28 @@ static uint8 simpleProfileChar1Props = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char1" Value variable
 uint8 simpleProfileChar1[SIMPLEPROFILE_CHAR1_LEN] = { 0x0, 0x0, 0x0, 0x0 };
 // Characteristic "Char1" User Description
-static uint8 simpleProfileChar1UserDesp[] = "Characteristic 1";
+static uint8 simpleProfileChar1UserDesp[] = "Log Count";
 
 // Characteristic "Char2" Properties (for declaration)
 static uint8 simpleProfileChar2Props = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char2" Value variable
 uint8 simpleProfileChar2[SIMPLEPROFILE_CHAR2_LEN] = { 0x0, 0x0, 0x0, 0x0 };
 // Characteristic "Char2" User Description
-static uint8 simpleProfileChar2UserDesp[] = "Characteristic 2";
+static uint8 simpleProfileChar2UserDesp[] = "Local Time";
 
 // Characteristic "Char3" Properties (for declaration)
 static uint8 simpleProfileChar3Props = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char3" Value variable
 uint8 simpleProfileChar3 = 0x0;
 // Characteristic "Char3" User Description
-static uint8 simpleProfileChar3UserDesp[] = "Characteristic 3";
+static uint8 simpleProfileChar3UserDesp[] = "Advertise Mode";
 
 // Characteristic "Char4" Properties (for declaration)
 static uint8 simpleProfileChar4Props = GATT_PROP_NOTIFY | GATT_PROP_WRITE;
 // Characteristic "Char4" Value variable
 uint8 simpleProfileChar4 = 0x0;
 // Characteristic "Char4" User Description
-static uint8 simpleProfileChar4UserDesp[] = "Characteristic 4";
+static uint8 simpleProfileChar4UserDesp[] = "Juxta Data";
 
 // Characteristic "Char4" CCCD
 static gattCharCfg_t *simpleProfileChar4Config;
