@@ -12,8 +12,9 @@ uint8_t NAND_Init() {
 	NMX_uint16 whoami;
 
 	FlashReset();
-	FlashUnlock(SPI_NAND_PROTECTED_ALL_UNLOCKED);
-//	FlashSetFeature(SPI_NAND_OTP_REG_ADDR, 0x00); // turn off ECC
+
+	FlashUnlockAll();
+//	FlashSetFeature(SPI_NAND_OTP_REG_ADDR, 0x00); // turn off ECC?
 
 	FlashReadDeviceIdentification(&whoami);
 	if (whoami != _NAND_ID) {
@@ -39,12 +40,12 @@ void ConfigureSpi(SpiConfigOptions opt) {
 	switch (opt) {
 	case OpsWakeUp:
 		// check if busy?
-		GPIO_write(CONFIG_GPIO_SPI_MEM_CONFIG_SS, GPIO_CFG_OUT_LOW);
+		GPIO_write(NAND_CS, GPIO_CFG_OUT_LOW);
 		break;
 	case OpsInitTransfer:
 		break;
 	case OpsEndTransfer:
-		GPIO_write(CONFIG_GPIO_SPI_MEM_CONFIG_SS, GPIO_CFG_OUT_HIGH);
+		GPIO_write(NAND_CS, GPIO_CFG_OUT_HIGH);
 		break;
 	default:
 		break;
