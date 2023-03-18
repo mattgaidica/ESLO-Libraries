@@ -82,6 +82,10 @@ extern "C" {
 #define SIMPLEPROFILE_CHAR7   6
 #define SIMPLEPROFILE_CHAR7_UUID 0xFFF7
 #define SIMPLEPROFILE_CHAR7_LEN  128
+// Characteristic defines, Command
+#define SIMPLEPROFILE_CHAR8   7
+#define SIMPLEPROFILE_CHAR8_UUID 0xFFF8
+#define SIMPLEPROFILE_CHAR8_LEN  1
 
 /*********************************************************************
  * TYPEDEFS
@@ -156,6 +160,7 @@ extern uint8 simpleProfileChar4[SIMPLEPROFILE_CHAR4_LEN];
 extern uint8 simpleProfileChar5[SIMPLEPROFILE_CHAR5_LEN];
 extern uint8 simpleProfileChar6;
 extern uint8 simpleProfileChar7[SIMPLEPROFILE_CHAR7_LEN];
+extern uint8 simpleProfileChar8;
 /*********************************************************************
  *********************************************************************/
 
