@@ -40,19 +40,17 @@
 #define _SERVICES_H_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-
 /*********************************************************************
-* INCLUDES
-*********************************************************************/
+ * INCLUDES
+ *********************************************************************/
 #include <stdint.h>
 #include <bcomdef.h>
 /*********************************************************************
-* CONSTANTS
-*********************************************************************/
+ * CONSTANTS
+ *********************************************************************/
 // Profile Parameters
 // Service UUID
 #define SIMPLEPROFILE_SERV_UUID 0xFFF0
@@ -60,53 +58,60 @@ extern "C"
 #define SIMPLEPROFILE_CHAR1   0
 #define SIMPLEPROFILE_CHAR1_UUID 0xFFF1
 #define SIMPLEPROFILE_CHAR1_LEN  4
-// Characteristic defines, Local Time
+// Characteristic defines, Meta Count
 #define SIMPLEPROFILE_CHAR2   1
 #define SIMPLEPROFILE_CHAR2_UUID 0xFFF2
 #define SIMPLEPROFILE_CHAR2_LEN  4
-// Characteristic defines, Advertise Mode
+// Characteristic defines, Local Time
 #define SIMPLEPROFILE_CHAR3   2
 #define SIMPLEPROFILE_CHAR3_UUID 0xFFF3
-#define SIMPLEPROFILE_CHAR3_LEN  1
-// Characteristic defines, Juxta Data
+#define SIMPLEPROFILE_CHAR3_LEN  4
+// Characteristic defines, Battery Voltage
 #define SIMPLEPROFILE_CHAR4   3
 #define SIMPLEPROFILE_CHAR4_UUID 0xFFF4
-#define SIMPLEPROFILE_CHAR4_LEN  128
-
-// Characteristic defines, Battery Voltage
+#define SIMPLEPROFILE_CHAR4_LEN  4
+// Characteristic defines, Temperature
 #define SIMPLEPROFILE_CHAR5   4
 #define SIMPLEPROFILE_CHAR5_UUID 0xFFF5
 #define SIMPLEPROFILE_CHAR5_LEN  4
+// Characteristic defines, Advertise Mode
+#define SIMPLEPROFILE_CHAR6   5
+#define SIMPLEPROFILE_CHAR6_UUID 0xFFF6
+#define SIMPLEPROFILE_CHAR6_LEN  1
+// Characteristic defines, Juxta Data
+#define SIMPLEPROFILE_CHAR7   6
+#define SIMPLEPROFILE_CHAR7_UUID 0xFFF7
+#define SIMPLEPROFILE_CHAR7_LEN  128
 
 /*********************************************************************
  * TYPEDEFS
-*********************************************************************/
+ *********************************************************************/
 
 /*********************************************************************
  * MACROS
-*********************************************************************/
+ *********************************************************************/
 
 /*********************************************************************
  * Profile Callbacks
-*********************************************************************/
+ *********************************************************************/
 
 // Callback when a characteristic value has changed
-typedef void (*simpleProfileChange_t)( uint8_t paramID);
+typedef void (*simpleProfileChange_t)(uint8_t paramID);
 
 typedef struct
 {
-  simpleProfileChange_t        pfnSimpleProfileChange;  // Called when characteristic value changes
-  simpleProfileChange_t        pfnCfgChangeCb;
+    simpleProfileChange_t pfnSimpleProfileChange; // Called when characteristic value changes
+    simpleProfileChange_t pfnCfgChangeCb;
 } simpleProfileCBs_t;
 /*********************************************************************
  * API FUNCTIONS
-*********************************************************************/
+ *********************************************************************/
 /*
  * _AddService- Initializes the service by registering
  *          GATT attributes with the GATT server.
  *
  */
-extern bStatus_t simpleProfile_AddService( uint32 services);
+extern bStatus_t simpleProfile_AddService(uint32 services);
 
 /*
  * _RegisterAppCBs - Registers the application callback function.
@@ -114,7 +119,7 @@ extern bStatus_t simpleProfile_AddService( uint32 services);
  *
  *    appCallbacks - pointer to application callbacks.
  */
-extern bStatus_t simpleProfile_RegisterAppCBs( simpleProfileCBs_t *appCallbacks );
+extern bStatus_t simpleProfile_RegisterAppCBs(simpleProfileCBs_t *appCallbacks);
 
 /*
  * _SetParameter - Set a service parameter.
@@ -126,7 +131,8 @@ extern bStatus_t simpleProfile_RegisterAppCBs( simpleProfileCBs_t *appCallbacks 
  *          data type (example: data type of uint16 will be cast to
  *          uint16 pointer).
  */
-extern bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value);
+extern bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len,
+                                            void *value);
 
 /*
  * _GetParameter - Get a service parameter.
@@ -140,16 +146,18 @@ extern bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
 extern bStatus_t simpleProfile_GetParameter(uint8 param, void *value);
 
 /*****************************************************
-Extern variables
-*****************************************************/
+ Extern variables
+ *****************************************************/
 extern simpleProfileCBs_t *simpleProfile_AppCBs;
 extern uint8 simpleProfileChar1[SIMPLEPROFILE_CHAR1_LEN];
 extern uint8 simpleProfileChar2[SIMPLEPROFILE_CHAR2_LEN];
-extern uint8 simpleProfileChar3;
+extern uint8 simpleProfileChar3[SIMPLEPROFILE_CHAR3_LEN];
 extern uint8 simpleProfileChar4[SIMPLEPROFILE_CHAR4_LEN];
 extern uint8 simpleProfileChar5[SIMPLEPROFILE_CHAR5_LEN];
+extern uint8 simpleProfileChar6;
+extern uint8 simpleProfileChar7[SIMPLEPROFILE_CHAR7_LEN];
 /*********************************************************************
-*********************************************************************/
+ *********************************************************************/
 
 #ifdef __cplusplus
 }
