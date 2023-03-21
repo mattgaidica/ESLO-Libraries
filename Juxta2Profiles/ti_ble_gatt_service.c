@@ -518,7 +518,7 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR5:
+    case SIMPLEPROFILE_CHAR5: // TEMP
         if (len == SIMPLEPROFILE_CHAR5_LEN)
         {
             VOID memcpy(simpleProfileChar5, value, len);
@@ -536,7 +536,7 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR6:
+    case SIMPLEPROFILE_CHAR6: // MODE
         if (len == SIMPLEPROFILE_CHAR6_LEN)
         {
             memcpy(&simpleProfileChar6, value, len);
@@ -547,7 +547,7 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR7:
+    case SIMPLEPROFILE_CHAR7: // DATA
         if (len == SIMPLEPROFILE_CHAR7_LEN)
         {
             VOID memcpy(simpleProfileChar7, value, len);
@@ -604,23 +604,23 @@ bStatus_t simpleProfile_GetParameter(uint8 param, void *value)
         memcpy(value, simpleProfileChar3, SIMPLEPROFILE_CHAR3_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR6:
+    case SIMPLEPROFILE_CHAR6: // MODE
     {
         memcpy(value, &simpleProfileChar6, SIMPLEPROFILE_CHAR6_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR7:
+    case SIMPLEPROFILE_CHAR7: // DATA
     {
         memcpy(value, simpleProfileChar7, SIMPLEPROFILE_CHAR7_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR8:
+    case SIMPLEPROFILE_CHAR8: // COMMAND
     {
         memcpy(value, &simpleProfileChar8, SIMPLEPROFILE_CHAR8_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR4: // no write
-    case SIMPLEPROFILE_CHAR5: // no write
+    case SIMPLEPROFILE_CHAR4: // BATT, no write
+    case SIMPLEPROFILE_CHAR5: // TEMP, no write
     default:
     {
         ret = INVALIDPARAMETER;
