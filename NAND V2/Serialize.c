@@ -8,7 +8,7 @@
  * 250Hz EEG sampling; perhaps bypass this with sensor
  * controller?
  */
-uint8_t NAND_Init() {
+bool NAND_Init() {
 	NMX_uint16 whoami;
 
 	FlashReset();
@@ -18,9 +18,9 @@ uint8_t NAND_Init() {
 
 	FlashReadDeviceIdentification(&whoami);
 	if (whoami != _NAND_ID) {
-		return NAND_FAIL;
+		return false;
 	}
-	return NAND_PASS;
+	return true;
 }
 
 /*******************************************************************************

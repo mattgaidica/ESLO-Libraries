@@ -69,44 +69,46 @@ CONST uint8 simpleProfileServUUID[ATT_BT_UUID_SIZE] = {
         LO_UINT16(SIMPLEPROFILE_SERV_UUID), HI_UINT16(SIMPLEPROFILE_SERV_UUID) };
 
 // Char1 UUID
-CONST uint8 simpleProfileChar1UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR1_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR1_UUID) };
+CONST uint8 juxtaProfile_logCountUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_LOGCOUNT_UUID), HI_UINT16(
+                JUXTAPROFILE_LOGCOUNT_UUID) };
 
 // Char2 UUID
-CONST uint8 simpleProfileChar2UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR2_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR2_UUID) };
+CONST uint8 juxtaProfile_metaCountUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_METACOUNT_UUID), HI_UINT16(
+                JUXTAPROFILE_METACOUNT_UUID) };
 
 // Char3 UUID
-CONST uint8 simpleProfileChar3UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR3_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR3_UUID) };
+CONST uint8 juxtaProfile_localTimeUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_LOCALTIME_UUID), HI_UINT16(
+                JUXTAPROFILE_LOCALTIME_UUID) };
 
 // Char4 UUID
-CONST uint8 simpleProfileChar4UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR4_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR4_UUID) };
+CONST uint8 juxtaProfile_vBattUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_VBATT_UUID), HI_UINT16(JUXTAPROFILE_VBATT_UUID) };
 
 // Char5 UUID
-CONST uint8 simpleProfileChar5UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR5_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR5_UUID) };
+CONST uint8 juxtaProfile_tempUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_TEMP_UUID), HI_UINT16(JUXTAPROFILE_TEMP_UUID) };
 
 // Char6 UUID
-CONST uint8 simpleProfileChar6UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR6_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR6_UUID) };
+CONST uint8 juxtaProfile_advModeUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_ADVMODE_UUID), HI_UINT16(
+                JUXTAPROFILE_ADVMODE_UUID) };
 
 // Char7 UUID
-CONST uint8 simpleProfileChar7UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR7_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR7_UUID) };
+CONST uint8 juxtaProfile_dataUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_DATA_UUID), HI_UINT16(JUXTAPROFILE_DATA_UUID) };
 
 // Char8 UUID
-CONST uint8 simpleProfileChar8UUID[ATT_BT_UUID_SIZE] =
-        { LO_UINT16(SIMPLEPROFILE_CHAR8_UUID), HI_UINT16(
-                SIMPLEPROFILE_CHAR8_UUID) };
+CONST uint8 juxtaProfile_commandUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_COMMAND_UUID), HI_UINT16(
+                JUXTAPROFILE_COMMAND_UUID) };
+
+// Char9 UUID
+CONST uint8 juxtaProfile_subjectUUID[ATT_BT_UUID_SIZE] = {
+        LO_UINT16(JUXTAPROFILE_SUBJECT_UUID), HI_UINT16(
+                JUXTAPROFILE_SUBJECT_UUID) };
 
 /*********************************************************************
  * LOCAL VARIABLES
@@ -122,66 +124,73 @@ static CONST gattAttrType_t simpleProfileService = { ATT_BT_UUID_SIZE,
                                                      simpleProfileServUUID };
 
 // Characteristic "Char1" Properties (for declaration)
-static uint8 simpleProfileChar1Props = GATT_PROP_READ | GATT_PROP_WRITE;
+static uint8 juxtaProfile_logCountProps = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char1" Value variable
-uint8 simpleProfileChar1[SIMPLEPROFILE_CHAR1_LEN] = { 0 };
+uint8 juxtaProfile_logCount[JUXTAPROFILE_LOGCOUNT_LEN] = { 0 };
 // Characteristic "Char1" User Description
-static uint8 simpleProfileChar1UserDesp[] = "Log Count";
+static uint8 juxtaProfile_logCountUserDesp[] = "Log Count";
 
 // Characteristic "Char2" Properties (for declaration)
-static uint8 simpleProfileChar2Props = GATT_PROP_READ | GATT_PROP_WRITE;
+static uint8 juxtaProfile_metaCountProps = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char2" Value variable
-uint8 simpleProfileChar2[SIMPLEPROFILE_CHAR2_LEN] = { 0 };
+uint8 juxtaProfile_metaCount[JUXTAPROFILE_METACOUNT_LEN] = { 0 };
 // Characteristic "Char2" User Description
-static uint8 simpleProfileChar2UserDesp[] = "Meta Count";
+static uint8 juxtaProfile_metaCountUserDesp[] = "Meta Count";
 
 // Characteristic "Char3" Properties (for declaration)
-static uint8 simpleProfileChar3Props = GATT_PROP_READ | GATT_PROP_WRITE;
+static uint8 juxtaProfile_localTimeProps = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char3" Value variable
-uint8 simpleProfileChar3[SIMPLEPROFILE_CHAR3_LEN] = { 0 };
+uint8 juxtaProfile_localTime[JUXTAPROFILE_LOCALTIME_LEN] = { 0 };
 // Characteristic "Char3" User Description
-static uint8 simpleProfileChar3UserDesp[] = "Local Time";
+static uint8 juxtaProfile_localTimeUserDesp[] = "Local Time";
 
 // Characteristic "Char4" Properties (for declaration)
-static uint8 simpleProfileChar4Props = GATT_PROP_READ | GATT_PROP_NOTIFY;
+static uint8 juxtaProfile_vBattProps = GATT_PROP_READ | GATT_PROP_NOTIFY;
 // Characteristic "Char4" Value variable
-uint8 simpleProfileChar4[SIMPLEPROFILE_CHAR4_LEN] = { 0 };
+uint8 juxtaProfile_vBatt[JUXTAPROFILE_VBATT_LEN] = { 0 };
 // Characteristic "Char4" User Description
-static uint8 simpleProfileChar4UserDesp[] = "Battery Voltage";
+static uint8 juxtaProfile_vBattUserDesp[] = "Battery Voltage";
 // Characteristic "Char4" CCCD
-static gattCharCfg_t *simpleProfileChar4Config;
+static gattCharCfg_t *juxtaProfile_vBattConfig;
 
 // Characteristic "Char5" Properties (for declaration)
-static uint8 simpleProfileChar5Props = GATT_PROP_READ | GATT_PROP_NOTIFY;
+static uint8 juxtaProfile_tempProps = GATT_PROP_READ | GATT_PROP_NOTIFY;
 // Characteristic "Char5" Value variable
-uint8 simpleProfileChar5[SIMPLEPROFILE_CHAR5_LEN] = { 0 };
+uint8 juxtaProfile_temp[JUXTAPROFILE_TEMP_LEN] = { 0 };
 // Characteristic "Char5" User Description
-static uint8 simpleProfileChar5UserDesp[] = "Temperature";
+static uint8 juxtaProfile_tempUserDesp[] = "Temperature";
 // Characteristic "Char5" CCCD
-static gattCharCfg_t *simpleProfileChar5Config;
+static gattCharCfg_t *juxtaProfile_tempConfig;
 
 // Characteristic "Char6" Properties (for declaration)
-static uint8 simpleProfileChar6Props = GATT_PROP_READ | GATT_PROP_WRITE;
+static uint8 juxtaProfile_advModeProps = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char6" Value variable
-uint8 simpleProfileChar6 = 0x0;
+uint8 juxtaProfile_advMode = 0x0;
 // Characteristic "Char6" User Description
-static uint8 simpleProfileChar6UserDesp[] = "Advertise Mode";
+static uint8 juxtaProfile_advModeUserDesp[] = "Advertise Mode";
 
 // Characteristic "Char7" Properties (for declaration)
-static uint8 simpleProfileChar7Props = GATT_PROP_NOTIFY;
+static uint8 juxtaProfile_dataProps = GATT_PROP_NOTIFY;
 // Characteristic "Char7" Value variable
-uint8 simpleProfileChar7[SIMPLEPROFILE_CHAR7_LEN] = { 0 };
+uint8 juxtaProfile_data[JUXTAPROFILE_DATA_LEN] = { 0 };
 // Characteristic "Char7" User Description
-static uint8 simpleProfileChar7UserDesp[] = "Juxta Data";
+static uint8 juxtaProfile_dataUserDesp[] = "Juxta Data";
 // Characteristic "Char7" CCCD
-static gattCharCfg_t *simpleProfileChar7Config;
+static gattCharCfg_t *juxtaProfile_dataConfig;
 
 // Characteristic "Char8" Properties (for declaration)
-static uint8 simpleProfileChar8Props = GATT_PROP_WRITE;
+static uint8 juxtaProfile_commandProps = GATT_PROP_WRITE;
 // Characteristic "Char8" Value variable
-uint8 simpleProfileChar8 = 0x0;
+uint8 juxtaProfile_command = 0x0;
 // Characteristic "Char8" User Description
-static uint8 simpleProfileChar8UserDesp[] = "Command";
+static uint8 juxtaProfile_commandUserDesp[] = "Command";
+
+// Characteristic "Char9" Properties (for declaration)
+static uint8 juxtaProfile_subjectProps = GATT_PROP_READ | GATT_PROP_WRITE;
+// Characteristic "Char9" Value variable
+uint8 juxtaProfile_subject[JUXTAPROFILE_SUBJECT_LEN] = { 0 };
+// Characteristic "Char9" User Description
+static uint8 juxtaProfile_subjectUserDesp[] = "Subject";
 
 /*********************************************************************
  * Profile Attributes - Table
@@ -195,144 +204,160 @@ static gattAttribute_t simpleProfileAttrTbl[] = { {
                                                   // Char1 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar1Props },
+          0, &juxtaProfile_logCountProps },
 
         // Char1 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar1UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_logCountUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, simpleProfileChar1 },
+          0, juxtaProfile_logCount },
 
         // Characteristic Char1 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar1UserDesp },
+          0, juxtaProfile_logCountUserDesp },
 
         // META COUNT
         // Char2 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar2Props },
+          0, &juxtaProfile_metaCountProps },
 
         // Char2 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar2UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_metaCountUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, simpleProfileChar2 },
+          0, juxtaProfile_metaCount },
 
         // Characteristic Char2 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar2UserDesp },
+          0, juxtaProfile_metaCountUserDesp },
 
         // LOCAL TIME
         // Char3 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar3Props },
+          0, &juxtaProfile_localTimeProps },
 
         // Char3 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar3UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_localTimeUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, simpleProfileChar3 },
+          0, juxtaProfile_localTime },
 
         // Characteristic Char3 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar3UserDesp },
+          0, juxtaProfile_localTimeUserDesp },
 
         // BATTERY
         // Char4 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar4Props },
+          0, &juxtaProfile_vBattProps },
 
         // Char4 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar4UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_vBattUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, simpleProfileChar4 },
+          0, juxtaProfile_vBatt },
 
         // Characteristic Char4 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar4UserDesp },
+          0, juxtaProfile_vBattUserDesp },
 
         // Char4 configuration
         { { ATT_BT_UUID_SIZE, clientCharCfgUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, (uint8*) &simpleProfileChar4Config },
+          0, (uint8*) &juxtaProfile_vBattConfig },
 
         // TEMPERATURE
         // Char5 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar5Props },
+          0, &juxtaProfile_tempProps },
 
         // Char5 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar5UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_tempUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, simpleProfileChar5 },
+          0, juxtaProfile_temp },
 
         // Characteristic Char5 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar5UserDesp },
+          0, juxtaProfile_tempUserDesp },
 
         // Char5 configuration
         { { ATT_BT_UUID_SIZE, clientCharCfgUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, (uint8*) &simpleProfileChar5Config },
+          0, (uint8*) &juxtaProfile_tempConfig },
 
         // ADVERTISE
         // Char6 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar6Props },
+          0, &juxtaProfile_advModeProps },
 
         // Char6 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar6UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_advModeUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, &simpleProfileChar6 },
+          0, &juxtaProfile_advMode },
 
         // Characteristic Char6 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar6UserDesp },
+          0, juxtaProfile_advModeUserDesp },
 
         // DATA
         // Char7 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar7Props },
+          0, &juxtaProfile_dataProps },
 
         // Char7 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar7UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_dataUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, simpleProfileChar7 },
+          0, juxtaProfile_data },
 
         // Characteristic Char7 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar7UserDesp },
+          0, juxtaProfile_dataUserDesp },
 
         // Char7 configuration
         { { ATT_BT_UUID_SIZE, clientCharCfgUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, (uint8*) &simpleProfileChar7Config },
+          0, (uint8*) &juxtaProfile_dataConfig },
 
         // COMMAND
         // Char8 Characteristic Declaration
         { { ATT_BT_UUID_SIZE, characterUUID },
         GATT_PERMIT_READ,
-          0, &simpleProfileChar8Props },
+          0, &juxtaProfile_commandProps },
 
         // Char8 Characteristic Value
-        { { ATT_BT_UUID_SIZE, simpleProfileChar8UUID },
+        { { ATT_BT_UUID_SIZE, juxtaProfile_commandUUID },
         GATT_PERMIT_READ | GATT_PERMIT_WRITE,
-          0, &simpleProfileChar8 },
+          0, &juxtaProfile_command },
 
         // Characteristic Char8 User Description
         { { ATT_BT_UUID_SIZE, charUserDescUUID },
         GATT_PERMIT_READ,
-          0, simpleProfileChar8UserDesp },
+          0, juxtaProfile_commandUserDesp },
+
+        // SUBJECT
+        // Char3 Characteristic Declaration
+        { { ATT_BT_UUID_SIZE, characterUUID },
+        GATT_PERMIT_READ,
+          0, &juxtaProfile_subjectProps },
+
+        // Char3 Characteristic Value
+        { { ATT_BT_UUID_SIZE, juxtaProfile_subjectUUID },
+        GATT_PERMIT_READ | GATT_PERMIT_WRITE,
+          0, juxtaProfile_subject },
+
+        // Characteristic Char3 User Description
+        { { ATT_BT_UUID_SIZE, charUserDescUUID },
+        GATT_PERMIT_READ,
+          0, juxtaProfile_subjectUserDesp },
 
 };
 
@@ -385,38 +410,38 @@ bStatus_t simpleProfile_AddService(uint32 services)
 
     // BATTERY
     // Allocate Client Characteristic Configuration table
-    simpleProfileChar4Config = (gattCharCfg_t*) ICall_malloc(
+    juxtaProfile_vBattConfig = (gattCharCfg_t*) ICall_malloc(
             sizeof(gattCharCfg_t) * MAX_NUM_BLE_CONNS);
-    if (simpleProfileChar4Config == NULL)
+    if (juxtaProfile_vBattConfig == NULL)
     {
         return ( bleMemAllocError);
     }
     // Initialize Client Characteristic Configuration attributes
     GATTServApp_InitCharCfg( LINKDB_CONNHANDLE_INVALID,
-                            simpleProfileChar4Config);
+                            juxtaProfile_vBattConfig);
 
     // TEMPERATURE
     // Allocate Client Characteristic Configuration table
-    simpleProfileChar5Config = (gattCharCfg_t*) ICall_malloc(
+    juxtaProfile_tempConfig = (gattCharCfg_t*) ICall_malloc(
             sizeof(gattCharCfg_t) * MAX_NUM_BLE_CONNS);
-    if (simpleProfileChar5Config == NULL)
+    if (juxtaProfile_tempConfig == NULL)
     {
         return ( bleMemAllocError);
     }
     // Initialize Client Characteristic Configuration attributes
     GATTServApp_InitCharCfg( LINKDB_CONNHANDLE_INVALID,
-                            simpleProfileChar5Config);
+                            juxtaProfile_tempConfig);
 
     // Allocate Client Characteristic Configuration table
-    simpleProfileChar7Config = (gattCharCfg_t*) ICall_malloc(
+    juxtaProfile_dataConfig = (gattCharCfg_t*) ICall_malloc(
             sizeof(gattCharCfg_t) * MAX_NUM_BLE_CONNS);
-    if (simpleProfileChar7Config == NULL)
+    if (juxtaProfile_dataConfig == NULL)
     {
         return ( bleMemAllocError);
     }
     // Initialize Client Characteristic Configuration attributes
     GATTServApp_InitCharCfg( LINKDB_CONNHANDLE_INVALID,
-                            simpleProfileChar7Config);
+                            juxtaProfile_dataConfig);
     if (services)
     {
         // Register GATT attribute list and CBs with GATT Server App
@@ -467,10 +492,10 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
     switch (param)
     {
 
-    case SIMPLEPROFILE_CHAR1: // LOG COUNT
-        if (len == SIMPLEPROFILE_CHAR1_LEN)
+    case JUXTAPROFILE_LOGCOUNT: // LOG COUNT
+        if (len == JUXTAPROFILE_LOGCOUNT_LEN)
         {
-            VOID memcpy(simpleProfileChar1, value, len);
+            VOID memcpy(juxtaProfile_logCount, value, len);
         }
         else
         {
@@ -478,10 +503,10 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR2: // META COUNT
-        if (len == SIMPLEPROFILE_CHAR2_LEN)
+    case JUXTAPROFILE_METACOUNT: // META COUNT
+        if (len == JUXTAPROFILE_METACOUNT_LEN)
         {
-            VOID memcpy(simpleProfileChar2, value, len);
+            VOID memcpy(juxtaProfile_metaCount, value, len);
         }
         else
         {
@@ -489,10 +514,10 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR3: // LOCAL TIME
-        if (len == SIMPLEPROFILE_CHAR3_LEN)
+    case JUXTAPROFILE_LOCALTIME: // LOCAL TIME
+        if (len == JUXTAPROFILE_LOCALTIME_LEN)
         {
-            VOID memcpy(simpleProfileChar3, value, len);
+            VOID memcpy(juxtaProfile_localTime, value, len);
         }
         else
         {
@@ -500,13 +525,13 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR4: // BATTERY
-        if (len == SIMPLEPROFILE_CHAR4_LEN)
+    case JUXTAPROFILE_VBATT: // BATTERY
+        if (len == JUXTAPROFILE_VBATT_LEN)
         {
-            memcpy(simpleProfileChar4, value, len);
+            memcpy(juxtaProfile_vBatt, value, len);
             // Try to send notification.
-            GATTServApp_ProcessCharCfg(simpleProfileChar4Config,
-                                       (uint8*) simpleProfileChar4, FALSE,
+            GATTServApp_ProcessCharCfg(juxtaProfile_vBattConfig,
+                                       (uint8*) juxtaProfile_vBatt, FALSE,
                                        simpleProfileAttrTbl,
                                        GATT_NUM_ATTRS(simpleProfileAttrTbl),
                                        INVALID_TASK_ID,
@@ -518,13 +543,13 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR5: // TEMP
-        if (len == SIMPLEPROFILE_CHAR5_LEN)
+    case JUXTAPROFILE_TEMP: // TEMP
+        if (len == JUXTAPROFILE_TEMP_LEN)
         {
-            VOID memcpy(simpleProfileChar5, value, len);
+            VOID memcpy(juxtaProfile_temp, value, len);
             // Try to send notification.
-            GATTServApp_ProcessCharCfg(simpleProfileChar5Config,
-                                       (uint8*) simpleProfileChar5, FALSE,
+            GATTServApp_ProcessCharCfg(juxtaProfile_tempConfig,
+                                       (uint8*) juxtaProfile_temp, FALSE,
                                        simpleProfileAttrTbl,
                                        GATT_NUM_ATTRS(simpleProfileAttrTbl),
                                        INVALID_TASK_ID,
@@ -536,10 +561,10 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR6: // MODE
-        if (len == SIMPLEPROFILE_CHAR6_LEN)
+    case JUXTAPROFILE_ADVMODE: // MODE
+        if (len == JUXTAPROFILE_ADVMODE_LEN)
         {
-            memcpy(&simpleProfileChar6, value, len);
+            memcpy(&juxtaProfile_advMode, value, len);
         }
         else
         {
@@ -547,13 +572,13 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR7: // DATA
-        if (len == SIMPLEPROFILE_CHAR7_LEN)
+    case JUXTAPROFILE_DATA: // DATA
+        if (len == JUXTAPROFILE_DATA_LEN)
         {
-            VOID memcpy(simpleProfileChar7, value, len);
+            VOID memcpy(juxtaProfile_data, value, len);
             // Try to send notification.
-            GATTServApp_ProcessCharCfg(simpleProfileChar7Config,
-                                       (uint8*) simpleProfileChar7, FALSE,
+            GATTServApp_ProcessCharCfg(juxtaProfile_dataConfig,
+                                       (uint8*) juxtaProfile_data, FALSE,
                                        simpleProfileAttrTbl,
                                        GATT_NUM_ATTRS(simpleProfileAttrTbl),
                                        INVALID_TASK_ID,
@@ -565,7 +590,18 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case SIMPLEPROFILE_CHAR8: // no reason to set this (write only)
+    case JUXTAPROFILE_SUBJECT: // LOCAL TIME
+        if (len == JUXTAPROFILE_SUBJECT_LEN)
+        {
+            VOID memcpy(juxtaProfile_subject, value, len);
+        }
+        else
+        {
+            ret = bleInvalidRange;
+        }
+        break;
+
+    case JUXTAPROFILE_COMMAND: // no reason to set this (write only)
     default:
         ret = INVALIDPARAMETER;
         break;
@@ -587,40 +623,45 @@ bStatus_t simpleProfile_GetParameter(uint8 param, void *value)
     bStatus_t ret = SUCCESS;
     switch (param)
     {
-    case SIMPLEPROFILE_CHAR1: // LOG COUNT
+    case JUXTAPROFILE_LOGCOUNT: // LOG COUNT
     {
-        memcpy(value, simpleProfileChar1, SIMPLEPROFILE_CHAR1_LEN);
+        memcpy(value, juxtaProfile_logCount, JUXTAPROFILE_LOGCOUNT_LEN);
         break;
     }
 
-    case SIMPLEPROFILE_CHAR2: // META COUNT
+    case JUXTAPROFILE_METACOUNT: // META COUNT
     {
-        memcpy(value, simpleProfileChar2, SIMPLEPROFILE_CHAR2_LEN);
+        memcpy(value, juxtaProfile_metaCount, JUXTAPROFILE_METACOUNT_LEN);
         break;
     }
 
-    case SIMPLEPROFILE_CHAR3: // LOCAL TIME
+    case JUXTAPROFILE_LOCALTIME: // LOCAL TIME
     {
-        memcpy(value, simpleProfileChar3, SIMPLEPROFILE_CHAR3_LEN);
+        memcpy(value, juxtaProfile_localTime, JUXTAPROFILE_LOCALTIME_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR6: // MODE
+    case JUXTAPROFILE_ADVMODE: // MODE
     {
-        memcpy(value, &simpleProfileChar6, SIMPLEPROFILE_CHAR6_LEN);
+        memcpy(value, &juxtaProfile_advMode, JUXTAPROFILE_ADVMODE_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR7: // DATA
+    case JUXTAPROFILE_DATA: // DATA
     {
-        memcpy(value, simpleProfileChar7, SIMPLEPROFILE_CHAR7_LEN);
+        memcpy(value, juxtaProfile_data, JUXTAPROFILE_DATA_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR8: // COMMAND
+    case JUXTAPROFILE_COMMAND: // COMMAND
     {
-        memcpy(value, &simpleProfileChar8, SIMPLEPROFILE_CHAR8_LEN);
+        memcpy(value, &juxtaProfile_command, JUXTAPROFILE_COMMAND_LEN);
         break;
     }
-    case SIMPLEPROFILE_CHAR4: // BATT, no write
-    case SIMPLEPROFILE_CHAR5: // TEMP, no write
+    case JUXTAPROFILE_SUBJECT: // LOCAL TIME
+    {
+        memcpy(value, juxtaProfile_subject, JUXTAPROFILE_SUBJECT_LEN);
+        break;
+    }
+    case JUXTAPROFILE_VBATT: // BATT, no write
+    case JUXTAPROFILE_TEMP: // TEMP, no write
     default:
     {
         ret = INVALIDPARAMETER;
@@ -729,42 +770,47 @@ bStatus_t simpleProfile_ReadAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
         {
         // No need for "GATT_SERVICE_UUID" or "GATT_CLIENT_CHAR_CFG_UUID" cases;
         // gattserverapp handles those reads
-        case SIMPLEPROFILE_CHAR1_UUID: // LOG COUNT
-            *pLen = SIMPLEPROFILE_CHAR1_LEN;
-            VOID memcpy(pValue, pAttr->pValue, SIMPLEPROFILE_CHAR1_LEN);
+        case JUXTAPROFILE_LOGCOUNT_UUID: // LOG COUNT
+            *pLen = JUXTAPROFILE_LOGCOUNT_LEN;
+            VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_LOGCOUNT_LEN);
             break;
 
-        case SIMPLEPROFILE_CHAR2_UUID: // META COUNT
-            *pLen = SIMPLEPROFILE_CHAR2_LEN;
-            VOID memcpy(pValue, pAttr->pValue, SIMPLEPROFILE_CHAR2_LEN);
+        case JUXTAPROFILE_METACOUNT_UUID: // META COUNT
+            *pLen = JUXTAPROFILE_METACOUNT_LEN;
+            VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_METACOUNT_LEN);
             break;
 
-        case SIMPLEPROFILE_CHAR3_UUID: // LOCAL TIME
-            *pLen = SIMPLEPROFILE_CHAR3_LEN;
-            VOID memcpy(pValue, pAttr->pValue, SIMPLEPROFILE_CHAR3_LEN);
+        case JUXTAPROFILE_LOCALTIME_UUID: // LOCAL TIME
+            *pLen = JUXTAPROFILE_LOCALTIME_LEN;
+            VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_LOCALTIME_LEN);
             break;
 
-        case SIMPLEPROFILE_CHAR4_UUID: // BATTERY
-            *pLen = SIMPLEPROFILE_CHAR4_LEN;
-            VOID memcpy(pValue, pAttr->pValue, SIMPLEPROFILE_CHAR4_LEN);
+        case JUXTAPROFILE_VBATT_UUID: // BATTERY
+            *pLen = JUXTAPROFILE_VBATT_LEN;
+            VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_VBATT_LEN);
             break;
 
-        case SIMPLEPROFILE_CHAR5_UUID: // TEMP
-            *pLen = SIMPLEPROFILE_CHAR5_LEN;
-            VOID memcpy(pValue, pAttr->pValue, SIMPLEPROFILE_CHAR5_LEN);
+        case JUXTAPROFILE_TEMP_UUID: // TEMP
+            *pLen = JUXTAPROFILE_TEMP_LEN;
+            VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_TEMP_LEN);
             break;
 
-        case SIMPLEPROFILE_CHAR6_UUID: // ADVERTISE
+        case JUXTAPROFILE_ADVMODE_UUID: // ADVERTISE
             *pLen = sizeof(uint8_t);
             pValue[0] = *pAttr->pValue;
             break;
 
-        case SIMPLEPROFILE_CHAR7_UUID: // DATA, no read but required for notify
-            *pLen = SIMPLEPROFILE_CHAR7_LEN;
-            VOID memcpy(pValue, pAttr->pValue, SIMPLEPROFILE_CHAR7_LEN);
+        case JUXTAPROFILE_DATA_UUID: // DATA, no read but required for notify
+            *pLen = JUXTAPROFILE_DATA_LEN;
+            VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_DATA_LEN);
             break;
 
-        case SIMPLEPROFILE_CHAR8_UUID: // COMMAND, no read perms
+        case JUXTAPROFILE_SUBJECT_UUID: // LOCAL TIME
+            *pLen = JUXTAPROFILE_SUBJECT_LEN;
+            VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_SUBJECT_LEN);
+            break;
+
+        case JUXTAPROFILE_COMMAND_UUID: // COMMAND, no read perms
         default:
             *pLen = 0;
             status = ATT_ERR_ATTR_NOT_FOUND;
@@ -809,11 +855,11 @@ bStatus_t simpleProfile_WriteAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
         switch (uuid)
         {
 
-        case SIMPLEPROFILE_CHAR1_UUID: // LOG COUNT
+        case JUXTAPROFILE_LOGCOUNT_UUID: // LOG COUNT
         {
             if (offset == 0)
             {
-                if (len != SIMPLEPROFILE_CHAR1_LEN)
+                if (len != JUXTAPROFILE_LOGCOUNT_LEN)
                 {
                     status = ATT_ERR_INVALID_VALUE_SIZE;
                 }
@@ -827,15 +873,15 @@ bStatus_t simpleProfile_WriteAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
             {
                 uint8 *pCurValue = (uint8*) pAttr->pValue;
                 memcpy(pCurValue, pValue, len);
-                notifyApp = SIMPLEPROFILE_CHAR1;
+                notifyApp = JUXTAPROFILE_LOGCOUNT;
             }
             break;
         }
-        case SIMPLEPROFILE_CHAR2_UUID: // META COUNT
+        case JUXTAPROFILE_METACOUNT_UUID: // META COUNT
         {
             if (offset == 0)
             {
-                if (len != SIMPLEPROFILE_CHAR2_LEN)
+                if (len != JUXTAPROFILE_METACOUNT_LEN)
                 {
                     status = ATT_ERR_INVALID_VALUE_SIZE;
                 }
@@ -849,39 +895,39 @@ bStatus_t simpleProfile_WriteAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
             {
                 uint8 *pCurValue = (uint8*) pAttr->pValue;
                 memcpy(pCurValue, pValue, len);
-                notifyApp = SIMPLEPROFILE_CHAR2;
-            }
-            break;
-        }
-
-        case SIMPLEPROFILE_CHAR3_UUID: // LOCAL TIME
-        {
-            if (offset == 0)
-            {
-                if (len != SIMPLEPROFILE_CHAR3_LEN)
-                {
-                    status = ATT_ERR_INVALID_VALUE_SIZE;
-                }
-            }
-            else
-            {
-                status = ATT_ERR_ATTR_NOT_LONG;
-            }
-            //Write the value
-            if (status == SUCCESS)
-            {
-                uint8 *pCurValue = (uint8*) pAttr->pValue;
-                memcpy(pCurValue, pValue, len);
-                notifyApp = SIMPLEPROFILE_CHAR3;
+                notifyApp = JUXTAPROFILE_METACOUNT;
             }
             break;
         }
 
-        case SIMPLEPROFILE_CHAR6_UUID: // ADVERTISE MODE, single byte
+        case JUXTAPROFILE_LOCALTIME_UUID: // LOCAL TIME
         {
             if (offset == 0)
             {
-                if (len != SIMPLEPROFILE_CHAR6_LEN)
+                if (len != JUXTAPROFILE_LOCALTIME_LEN)
+                {
+                    status = ATT_ERR_INVALID_VALUE_SIZE;
+                }
+            }
+            else
+            {
+                status = ATT_ERR_ATTR_NOT_LONG;
+            }
+            //Write the value
+            if (status == SUCCESS)
+            {
+                uint8 *pCurValue = (uint8*) pAttr->pValue;
+                memcpy(pCurValue, pValue, len);
+                notifyApp = JUXTAPROFILE_LOCALTIME;
+            }
+            break;
+        }
+
+        case JUXTAPROFILE_ADVMODE_UUID: // ADVERTISE MODE, single byte
+        {
+            if (offset == 0)
+            {
+                if (len != JUXTAPROFILE_ADVMODE_LEN)
                 {
                     status = ATT_ERR_INVALID_VALUE_SIZE;
                 }
@@ -895,16 +941,16 @@ bStatus_t simpleProfile_WriteAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
             {
                 uint8 *pCurValue = (uint8*) pAttr->pValue;
                 *pCurValue = pValue[0]; // single byte
-                notifyApp = SIMPLEPROFILE_CHAR6;
+                notifyApp = JUXTAPROFILE_ADVMODE;
             }
             break;
         }
 
-        case SIMPLEPROFILE_CHAR8_UUID: // COMMAND
+        case JUXTAPROFILE_COMMAND_UUID: // COMMAND
         {
             if (offset == 0)
             {
-                if (len != SIMPLEPROFILE_CHAR8_LEN)
+                if (len != JUXTAPROFILE_COMMAND_LEN)
                 {
                     status = ATT_ERR_INVALID_VALUE_SIZE;
                 }
@@ -918,7 +964,30 @@ bStatus_t simpleProfile_WriteAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
             {
                 uint8 *pCurValue = (uint8*) pAttr->pValue;
                 *pCurValue = pValue[0]; // single byte
-                notifyApp = SIMPLEPROFILE_CHAR8;
+                notifyApp = JUXTAPROFILE_COMMAND;
+            }
+            break;
+        }
+
+        case JUXTAPROFILE_SUBJECT_UUID: // LOCAL TIME
+        {
+            if (offset == 0)
+            {
+                if (len != JUXTAPROFILE_SUBJECT_LEN)
+                {
+                    status = ATT_ERR_INVALID_VALUE_SIZE;
+                }
+            }
+            else
+            {
+                status = ATT_ERR_ATTR_NOT_LONG;
+            }
+            //Write the value
+            if (status == SUCCESS)
+            {
+                uint8 *pCurValue = (uint8*) pAttr->pValue;
+                memcpy(pCurValue, pValue, len);
+                notifyApp = JUXTAPROFILE_SUBJECT;
             }
             break;
         }
@@ -929,9 +998,9 @@ bStatus_t simpleProfile_WriteAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
                                                     GATT_CLIENT_CFG_NOTIFY);
             break;
 
-        case SIMPLEPROFILE_CHAR4_UUID: // BATTERY, no write
-        case SIMPLEPROFILE_CHAR5_UUID: // TEMP, no write
-        case SIMPLEPROFILE_CHAR7_UUID: // DATA, no write
+        case JUXTAPROFILE_VBATT_UUID: // BATTERY, no write
+        case JUXTAPROFILE_TEMP_UUID: // TEMP, no write
+        case JUXTAPROFILE_DATA_UUID: // DATA, no write
         default:
             status = ATT_ERR_ATTR_NOT_FOUND;
             break;
