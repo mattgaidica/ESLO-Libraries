@@ -179,7 +179,7 @@ static uint8 juxtaProfile_dataUserDesp[] = "Juxta Data";
 static gattCharCfg_t *juxtaProfile_dataConfig;
 
 // Characteristic "Char8" Properties (for declaration)
-static uint8 juxtaProfile_commandProps = GATT_PROP_WRITE;
+static uint8 juxtaProfile_commandProps = GATT_PROP_READ | GATT_PROP_WRITE;
 // Characteristic "Char8" Value variable
 uint8 juxtaProfile_command = 0x0;
 // Characteristic "Char8" User Description
@@ -572,6 +572,17 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
+    case JUXTAPROFILE_COMMAND: // COMAND
+        if (len == JUXTAPROFILE_COMMAND_LEN)
+        {
+            memcpy(&juxtaProfile_command, value, len);
+        }
+        else
+        {
+            ret = bleInvalidRange;
+        }
+        break;
+
     case JUXTAPROFILE_DATA: // DATA
         if (len == JUXTAPROFILE_DATA_LEN)
         {
@@ -590,7 +601,7 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case JUXTAPROFILE_SUBJECT: // LOCAL TIME
+    case JUXTAPROFILE_SUBJECT: // SUBJECT
         if (len == JUXTAPROFILE_SUBJECT_LEN)
         {
             VOID memcpy(juxtaProfile_subject, value, len);
@@ -601,7 +612,6 @@ bStatus_t simpleProfile_SetParameter(uint8 param, uint8 len, void *value)
         }
         break;
 
-    case JUXTAPROFILE_COMMAND: // no reason to set this (write only)
     default:
         ret = INVALIDPARAMETER;
         break;
@@ -655,7 +665,7 @@ bStatus_t simpleProfile_GetParameter(uint8 param, void *value)
         memcpy(value, &juxtaProfile_command, JUXTAPROFILE_COMMAND_LEN);
         break;
     }
-    case JUXTAPROFILE_SUBJECT: // LOCAL TIME
+    case JUXTAPROFILE_SUBJECT: // SUBJECT
     {
         memcpy(value, juxtaProfile_subject, JUXTAPROFILE_SUBJECT_LEN);
         break;
@@ -800,17 +810,21 @@ bStatus_t simpleProfile_ReadAttrCB(uint16_t connHandle, gattAttribute_t *pAttr,
             pValue[0] = *pAttr->pValue;
             break;
 
+        case JUXTAPROFILE_COMMAND_UUID: // COMMAND
+            *pLen = sizeof(uint8_t);
+            pValue[0] = *pAttr->pValue;
+            break;
+
         case JUXTAPROFILE_DATA_UUID: // DATA, no read but required for notify
             *pLen = JUXTAPROFILE_DATA_LEN;
             VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_DATA_LEN);
             break;
 
-        case JUXTAPROFILE_SUBJECT_UUID: // LOCAL TIME
+        case JUXTAPROFILE_SUBJECT_UUID: // SUBJECT
             *pLen = JUXTAPROFILE_SUBJECT_LEN;
             VOID memcpy(pValue, pAttr->pValue, JUXTAPROFILE_SUBJECT_LEN);
             break;
 
-        case JUXTAPROFILE_COMMAND_UUID: // COMMAND, no read perms
         default:
             *pLen = 0;
             status = ATT_ERR_ATTR_NOT_FOUND;
