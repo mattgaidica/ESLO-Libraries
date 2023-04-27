@@ -43,7 +43,7 @@
 #include "util.h"
 /* This Header file contains all BLE API and icall structure definition */
 #include "icall_ble_api.h"
-#include "ti_ble_gatt_service.h"
+#include "juxta_gatt_service.h"
 
 #ifdef SYSCFG
 #include "ti_ble_config.h"
@@ -66,7 +66,7 @@
 
 // simpleProfile Service UUID
 CONST uint8 simpleProfileServUUID[ATT_BT_UUID_SIZE] = {
-        LO_UINT16(SIMPLEPROFILE_SERV_UUID), HI_UINT16(SIMPLEPROFILE_SERV_UUID) };
+        LO_UINT16(JUXTAPROFILE_SERV_UUID), HI_UINT16(JUXTAPROFILE_SERV_UUID) };
 
 // Char1 UUID
 CONST uint8 juxtaProfile_logCountUUID[ATT_BT_UUID_SIZE] = {
