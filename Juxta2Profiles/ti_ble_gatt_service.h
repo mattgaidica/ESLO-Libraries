@@ -53,7 +53,7 @@ extern "C" {
  *********************************************************************/
 // Profile Parameters
 // Service UUID
-#define JUXTAPROFILE_SERV_UUID 0xFFF0
+#define SIMPLEPROFILE_SERV_UUID 0xFFF0
 // Characteristic defines, Log Count
 #define JUXTAPROFILE_LOGCOUNT   0
 #define JUXTAPROFILE_LOGCOUNT_UUID 0xFFF1
