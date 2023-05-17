@@ -14,7 +14,7 @@ bool NAND_Init() {
 	FlashReset();
 
 	FlashUnlockAll();
-//	FlashSetFeature(SPI_NAND_OTP_REG_ADDR, 0x00); // turn off ECC?
+	FlashSetFeature(SPI_NAND_OTP_REG_ADDR, 0x00); // turn off ECC
 
 	FlashReadDeviceIdentification(&whoami);
 	if (whoami != _NAND_ID) {
